@@ -19,6 +19,5 @@ public class Movie {
     int numberOfReviews;
     String photos;
 
-    //ganre
-
+    MovieGenres movieGenres;
 }

@@ -17,20 +17,25 @@ public class main {
 
         int userID = randomIdGen.nextInt(bound);
         User user = new User(userID,"user","test","userTest",
-                "444",228366,"userTest@gmail.com",18,Sex.NONBINARY,userAddress,null,null);
+                "444",228366,"userTest@gmail.com",18,Sex.OTHER,userAddress,null,null,UserRole.MEMBER,
+                null,null,null,null,null
+                ,null);
         User user2 = new User(userID+2,"user2","test","userTest",
-                "445",228366,"userTest@gmail.com",18,Sex.NONBINARY,userAddress,null,null);
+                "445",228366,"userTest@gmail.com",18,Sex.OTHER,userAddress,null,null,UserRole.MEMBER,
+        null,null,null,null,null
+                ,null);
         usersDb.add(user);
         usersDb.add(user2);
 
         String[] rolelist = {"admin","member","editor","cast"};
 
-        Address amdinAddress = userAddress;
+
         int adminId = randomIdGen.nextInt(bound);
-        Admin admin1 = new Admin(adminId,"Parsa",
+        User admin1 = new User(adminId,"Parsa",
                 "Haghighatgoo","parca","parca444",228
-        ,"prsahahgighatgoo@gmail.com",20,Sex.MALE,amdinAddress
-        ,null,null,null,null,null,null,null);
+        ,"prsahahgighatgoo@gmail.com",20,Sex.MALE,userAddress,null,null
+        ,UserRole.ADMIN,null,null,null,null,null
+        ,null);
 
         usersDb.add(admin1);
 
@@ -59,12 +64,12 @@ public class main {
                         User.menu(role);
                         command = Integer.parseInt(scanner.nextLine());
                         if(command == 0){break;}
-                        else if (command == 1 ){Admin.seeAllUser();}
+                        else if (command == 1 ){User.seeAllUser();}
                         else if(command == 2 ){
                             System.out.println("-------------------------------------------------------------");
                             System.out.println("enter the username of user you want delete:");
                             String whichUser = scanner.nextLine();
-                            Admin.deleteUser(whichUser);
+                            User.deleteUser(whichUser);
                         }
                         else if(command == 3){
                             System.out.println("-------------------------------------------------------------");
@@ -85,26 +90,13 @@ public class main {
                             System.out.println("enter new user's gender:");
                             System.out.println("which one you want\n1.male\n2.female\n3.nonbinary\n4.other");
                             int newsex = Integer.parseInt(scanner.nextLine());
-                            if (newsex == 1){
-                                Admin.addUser(randomIdGen.nextInt(bound),newName
-                                ,newlastname,newuserName,newpassword,newnationalid
-                                ,newemail,newage,Sex.MALE,null,null,null);
-                            }
-                            else if (newsex == 2){
-                                Admin.addUser(randomIdGen.nextInt(bound),newName
-                                        ,newlastname,newuserName,newpassword,newnationalid
-                                        ,newemail,newage,Sex.FEMALE,null,null,null);
-                            }
-                            else if (newsex == 3){
-                                Admin.addUser(randomIdGen.nextInt(bound),newName
-                                        ,newlastname,newuserName,newpassword,newnationalid
-                                        ,newemail,newage,Sex.NONBINARY,null,null,null);
-                            }
-                            else if (newsex == 4){
-                                Admin.addUser(randomIdGen.nextInt(bound),newName
-                                        ,newlastname,newuserName,newpassword,newnationalid
-                                        ,newemail,newage,Sex.OTHER,null,null,null);
-                            }
+                            System.out.println("what's newuers's role:\n1.admin\n2.editor\n3.member");
+                            int newrole = Integer.parseInt(scanner.nextLine());
+                            User.addUser(randomIdGen.nextInt(bound),newName
+                                    ,newlastname,newuserName,newpassword,newnationalid
+                                    ,newemail,newage,User.newUserSex(newsex),null,null,null,User.newUserRole(newrole),
+                                    null,null,null,null,null,null);
+
                             System.out.println("user added successfuly!");
                             System.out.println("-------------------------------------------------------------");
                         }
