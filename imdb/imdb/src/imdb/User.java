@@ -157,7 +157,8 @@ public class User {
         switch (role){
             case 1:
                 System.out.println("Enter your command:");
-                System.out.println("admin");
+                System.out.println("-------------------------------------------------------------");
+                System.out.println("0.sign out\n1.see all users\n2.delete user\n3.add user");
                 return;
             case 2:
                 System.out.println("Enter your command:");

@@ -1,5 +1,7 @@
 package imdb;
 
+import com.sun.tools.javac.Main;
+
 import java.util.ArrayList;
 
 public class Admin extends User{
@@ -69,6 +71,41 @@ public class Admin extends User{
                 ", reports=" + reports +
                 ", users=" + users +
                 '}';
+    }
+    public static void seeAllUser(){
+        int cnt = 1 ;
+        for(User user : main.usersDb){
+            System.out.println(cnt +"- " + user.userName);
+            cnt++;
+        }
+        System.out.println("-------------------------------------------------------------");
+    }
+
+    public static void deleteUser(String username){
+        for(User userr : main.usersDb){
+            if(userr.userName.equals(username)){
+                main.usersDb.remove(userr);
+                System.out.println("user " + username + " deleted successfuly!");
+                System.out.println("-------------------------------------------------------------");
+                return;
+            }
+        }
+    }
+    public static void addUser(int id,
+                               String name,
+                               String lastName,
+                               String userName,
+                               String passWord,
+                               int nationalID,
+                               String email,
+                               int age,
+                               Sex sex,
+                               Address address,
+                               ArrayList<User> followers,
+                               ArrayList<User> following){
+        User newUser = new User(id, name, lastName, userName, passWord,
+                nationalID, email, age, sex, address, followers, following);
+        main.usersDb.add(newUser);
     }
 
 }
