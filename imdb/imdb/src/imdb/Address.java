@@ -1,6 +1,7 @@
 package imdb;
 
 public class Address {
+    String countyName;
     String provienceName;
     String cityName;
     String street;
@@ -9,6 +10,7 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
+                "country='"+countyName+'\''+
                 "provienceName='" + provienceName + '\'' +
                 ", cityName='" + cityName + '\'' +
                 ", street='" + street + '\'' +
@@ -48,8 +50,9 @@ public class Address {
         this.plaque = plaque;
     }
 
-    public Address(String provienceName, String cityName, String street, int plaque) {
+    public Address(String countyName,String provienceName, String cityName, String street, int plaque) {
         this.provienceName = provienceName;
+        this.countyName = countyName;
         this.cityName = cityName;
         this.street = street;
         this.plaque = plaque;

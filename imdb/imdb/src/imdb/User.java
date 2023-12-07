@@ -22,8 +22,9 @@ public class User {
     ArrayList<Movie> watchList;
     ArrayList<Movie> favorites;
     ArrayList<Cast> castsFollowing;
+    int isActive;
 
-    public User(int id, String name, String lastName, String userName, String passWord, int nationalID, String email, int age, Sex sex, Address address, ArrayList<User> followers, ArrayList<User> following, UserRole userRole, ArrayList<Report> reports, ArrayList<Review> reviews, ArrayList<Movie> classicsToSee, ArrayList<Movie> watchList, ArrayList<Movie> favorites, ArrayList<Cast> castsFollowing) {
+    public User(int id, String name, String lastName, String userName, String passWord, int nationalID, String email, int age, Sex sex, Address address, ArrayList<User> followers, ArrayList<User> following, UserRole userRole, ArrayList<Report> reports, ArrayList<Review> reviews, ArrayList<Movie> classicsToSee, ArrayList<Movie> watchList, ArrayList<Movie> favorites, ArrayList<Cast> castsFollowing, int isActive) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -43,6 +44,7 @@ public class User {
         this.watchList = watchList;
         this.favorites = favorites;
         this.castsFollowing = castsFollowing;
+        this.isActive = isActive;
     }
 
     @Override
@@ -69,48 +71,153 @@ public class User {
                 ", castsFollowing=" + castsFollowing +
                 '}';
     }
-    public static User login(String usreName, String passWord){
-        for (User user: main.usersDb) {
-            if (user.userName.equals(usreName) && user.passWord.equals(passWord)){
+
+    public static User login(String usreName, String passWord) {
+        for (User user : main.usersDb) {
+            if (user.userName.equals(usreName) && user.passWord.equals(passWord)) {
                 return user;
             }
         }
         return null;
     }
-    public static void menu(int role){
-        switch (role){
+
+    public static void menu(User currentUser) {
+        int role = 0;
+        if (currentUser.userRole == UserRole.ADMIN) role = 1;
+        else if (currentUser.userRole == UserRole.MEMBER) role = 2;
+        else if (currentUser.userRole == UserRole.EDITOR) role = 3;
+
+        switch (role) {
             case 1:
                 System.out.println("Enter your command:");
                 System.out.println("-------------------------------------------------------------");
-                System.out.println("0.sign out\n1.see all users\n2.delete user\n3.add user");
+                System.out.println("0.sign out\n1.see all users\n2.delete user\n3.add user\n" +
+                        "4.ban user\n5.edit user");
                 return;
             case 2:
                 System.out.println("Enter your command:");
                 System.out.println("member");
                 return;
-            case 3 :
+            case 3:
                 System.out.println("Enter your command:");
                 System.out.println("editor");
                 return;
-            case 4:
-                System.out.println("Enter your command:");
-                System.out.println("cast");
+            default:
                 return;
-            default :
-                return;}
+        }
     }
-    public static void seeAllUser(){
-        int cnt = 1 ;
-        for(User user : main.usersDb){
-            System.out.println(cnt +"- " + user.userName);
+
+    public static void seeAllUser() {
+        int cnt = 1;
+        for (User user : main.usersDb) {
+            System.out.println(cnt + "- " + user.userName);
             cnt++;
         }
         System.out.println("-------------------------------------------------------------");
     }
 
-    public static void deleteUser(String username){
-        for(User userr : main.usersDb){
-            if(userr.userName.equals(username)){
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
+    public static void editUser(String userName) {
+        for (User user : main.usersDb) {
+            if (user.userName.equals(userName)) {
+                System.out.println("edit :\n" +
+                        "1. id\n" +
+                        "2. name\n" +
+                        "3. lastName\n" +
+                        "4. userName\n" +
+                        "5. passWord\n" +
+                        "6. nationalID\n" +
+                        "7. String email\n" +
+                        "8. age\n" +
+                        "9. sex\n" +
+                        "10. address\n" +
+                        "11. userRole\n"
+                );
+                int command = Integer.parseInt(main.scanner.nextLine());
+                if (command == 1) {
+                    System.out.println("enter new id:");
+                    int editId = Integer.parseInt(main.scanner.nextLine());
+                    user.id = editId;
+                } else if (command == 2) {
+                    System.out.println("enter new name:");
+                    String editname = main.scanner.nextLine();
+                    user.name = editname;
+                } else if (command == 3) {
+                    System.out.println("enter new lastname:");
+                    String editlastname = main.scanner.nextLine();
+                    user.lastName = editlastname;
+                } else if (command == 4) {
+                    System.out.println("enter new username:");
+                    String editusername = main.scanner.nextLine();
+                    user.userName = editusername;
+                } else if (command == 5) {
+                    System.out.println("enter new password:");
+                    String editpass = main.scanner.nextLine();
+                    user.passWord = editpass;
+                } else if (command == 6) {
+                    System.out.println("enter new national id:");
+                    int editNid = Integer.parseInt(main.scanner.nextLine());
+                    user.nationalID = editNid;
+                } else if (command == 7) {
+                    System.out.println("enter new email:");
+                    String editemail = main.scanner.nextLine();
+                    user.email = editemail;
+                } else if (command == 8) {
+                    System.out.println("enter new age:");
+                    int editage = Integer.parseInt(main.scanner.nextLine());
+                    user.age = editage;
+                } else if (command == 9) {
+                    System.out.println("enter new sex:\n1.male\n2.female\n3.others");
+                    int editsex = Integer.parseInt(main.scanner.nextLine());
+                    user.sex = newUserSex(editsex);
+                } else if (command == 10) {
+                    System.out.println("enter the user's country");
+                    String newcountry = main.scanner.nextLine();
+                    System.out.println("enter the user's provience:");
+                    String newprovience = main.scanner.nextLine();
+                    System.out.println("enter the user's city:");
+                    String newcity = main.scanner.nextLine();
+                    System.out.println("enter the user's street:");
+                    String newstreet = main.scanner.nextLine();
+                    System.out.println("enter the user's plaque:");
+                    int newplaque = Integer.parseInt(main.scanner.nextLine());
+                    Address newaddress = new Address(newcountry, newprovience, newcity, newstreet, newplaque);
+                    user.address = newaddress;
+                } else if (command == 11) {
+                    System.out.println("enter new role for user :\n1.admin\n2.editor\n3.member");
+                    int newrole = Integer.parseInt(main.scanner.nextLine());
+                    user.userRole = newUserRole(newrole);
+                }
+                break;
+            }
+        }
+
+
+    }
+
+    public static void banUser(String userName) {
+        for (User user : main.usersDb) {
+            if (user.userName.equals(userName)) {
+                user.isActive = 0;
+                System.out.println("user " + userName + " banned!");
+                System.out.println("-------------------------------------------------------------");
+                return;
+            }
+        }
+        System.out.println("user not fount for banning!");
+        return;
+    }
+
+    public static void deleteUser(String username) {
+        for (User userr : main.usersDb) {
+            if (userr.userName.equals(username)) {
                 main.usersDb.remove(userr);
                 System.out.println("user " + username + " deleted successfuly!");
                 System.out.println("-------------------------------------------------------------");
@@ -118,18 +225,21 @@ public class User {
             }
         }
     }
-    public static Sex newUserSex(int newsex){
-        if(newsex == 1)return Sex.MALE;
+
+    public static Sex newUserSex(int newsex) {
+        if (newsex == 1) return Sex.MALE;
         else if (newsex == 2) return Sex.FEMALE;
         else if (newsex == 3) return Sex.MALE.OTHER;
         return Sex.OTHER;
     }
-    public  static UserRole newUserRole(int newrole){
+
+    public static UserRole newUserRole(int newrole) {
         if (newrole == 1) return UserRole.ADMIN;
         else if (newrole == 2) return UserRole.EDITOR;
         else if (newrole == 3) return UserRole.MEMBER;
         return UserRole.MEMBER;
     }
+
     public static void addUser(int id,
                                String name,
                                String lastName,
@@ -148,10 +258,10 @@ public class User {
                                ArrayList<Movie> classicsToSee,
                                ArrayList<Movie> watchList,
                                ArrayList<Movie> favorites,
-                               ArrayList<Cast> castsFollowing){
+                               ArrayList<Cast> castsFollowing, int isActive) {
         User newUser = new User(id, name, lastName, userName, passWord,
-                nationalID, email, age, sex, address, followers, following,userRole,reports
-        ,reviews,classicsToSee,watchList,favorites,castsFollowing);
+                nationalID, email, age, sex, address, followers, following, userRole, reports
+                , reviews, classicsToSee, watchList, favorites, castsFollowing, isActive);
         main.usersDb.add(newUser);
     }
 
