@@ -7,12 +7,16 @@ import java.util.Scanner;
 
 public class main {
     public static ArrayList<User> usersDb = new ArrayList<>();
+    public static ArrayList<Movie> moviesDb = new ArrayList<>();
+    public static ArrayList<Report> reportsDb = new ArrayList<>();
     public static Random randomIdGen = new Random();
     public static Scanner scanner = new Scanner(System.in);
+    public static int bound = 1000000;
+
+    public static User logedInUser;
 
     public static void main(String[] args) {
 
-        int bound = 1000000;
 
         Address userAddress = new Address("iran", "fars", "shiraz", "avini", 1);
 
@@ -39,6 +43,11 @@ public class main {
                 , null, 1);
         usersDb.add(admin1);
 
+
+        Movie movieTest = new Movie(randomIdGen.nextInt(bound),"movieTest",randomIdGen.nextInt(100),"","","","",null
+                ,null,"",null,"",0,"",MovieGenres.ACION);
+
+
         while (true) {
             System.out.println("-------------------------------------------------------------");
             System.out.println("enter your command:");
@@ -57,7 +66,7 @@ public class main {
                 System.out.println("enter your password:");
                 String inpPass = scanner.nextLine();
                 if (User.login(inpUser, inpPass) != null) {
-                    User logedInUser = User.login(inpUser, inpPass);
+                    logedInUser = User.login(inpUser, inpPass);
                     System.out.println("Login successful as " + logedInUser.userRole + "\nHi " + logedInUser.name);
                     while (true) {
                         if (logedInUser.isActive == 0) {
@@ -135,6 +144,58 @@ public class main {
                                 String whichUser = scanner.nextLine();
                                 User.editUser(whichUser);
                             }
+                            else if(command == 6){
+                                System.out.println("-------------------------------------------------------------");
+                                User.listOfMovie();
+                            }
+                            else if(command == 7){
+                                System.out.println("-------------------------------------------------------------");
+                                System.out.println("enter the title of movie you want delete:");
+                                String whichMovie = scanner.nextLine();
+                                User.deleteMovie(whichMovie);
+                            }
+                            else if(command == 8){
+                                System.out.println("-------------------------------------------------------------");
+                                System.out.println("enter new title:");
+                                String newtitle = scanner.nextLine();
+                                System.out.println("enter new rate:");
+                                int newrate = Integer.parseInt(scanner.nextLine());
+                                System.out.println("enter new trailer:");
+                                String newtrailer = scanner.nextLine();
+                                System.out.println("enter new summry:");
+                                String newsummry = scanner.nextLine();
+                                System.out.println("enter new poster link:");
+                                String newposter = scanner.nextLine();
+                                System.out.println("enter new realese date:");
+                                String newrealesedare = scanner.nextLine();
+                                System.out.println("enter new reports:");
+                                ArrayList<Report> newreports = new ArrayList<>();
+                                System.out.println("enter new reviews:");
+                                ArrayList<Review> newreviews = new ArrayList<>();
+                                System.out.println("enter new soundtrack link:");
+                                String newsoundtrack = scanner.nextLine();
+                                System.out.println("enter new casts:");
+                                ArrayList<Cast> newcasts = new ArrayList<>();
+                                System.out.println("enter new play link:");
+                                String newplay = scanner.nextLine();
+                                System.out.println("enter new number of reviews");
+                                int newnumofr = Integer.parseInt(scanner.nextLine());
+                                System.out.println("eneter new photos link:");
+                                String newphotos = scanner.nextLine();
+                                System.out.println("enter new movie genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
+                                int newg = Integer.parseInt(scanner.nextLine());
+                                MovieGenres newmoviegenre = User.newgenre(newg);
+                                User.addmovie(randomIdGen.nextInt(bound),newtitle,newrate,newtrailer,newsummry,newposter,newrealesedare
+                                ,newreports,newreviews,newsoundtrack,newcasts,newplay,newnumofr,newphotos,newmoviegenre);
+                                System.out.println("movie added successfuly!");
+                                System.out.println("-------------------------------------------------------------");
+                            }
+                            else if (command == 9){
+                                System.out.println("-------------------------------------------------------------");
+                                System.out.println("enter the title of movie you wanna edit:");
+                                String whichMovie = scanner.nextLine();
+                                User.editMovie(whichMovie);
+                            }
                         }
 
                     }
@@ -143,6 +204,53 @@ public class main {
                     System.out.println("-------------------------------------------------------------");
                     System.out.println("user not found!\nTry again :D");
                 }
+            }
+            else if (command == 3){
+                System.out.println("for creating a new account please write your informations:");
+                System.out.println("-------------------------------------------------------------");
+                System.out.println("enter new your name:");
+                String newName = scanner.nextLine();
+                System.out.println("enter your lastname:");
+                String newlastname = scanner.nextLine();
+                System.out.println("enter  your username:");
+                String newuserName = scanner.nextLine();
+                System.out.println("enter  your password:");
+                String newpassword = scanner.nextLine();
+                System.out.println("enter  your nationalid:");
+                int newnationalid = Integer.parseInt(scanner.nextLine());
+                System.out.println("enter your email:");
+                String newemail = scanner.nextLine();
+                System.out.println("enter your age:");
+                int newage = Integer.parseInt(scanner.nextLine());
+                System.out.println("enter your gender:");
+                System.out.println("which one you want\n1.male\n2.female\n3.nonbinary\n4.other");
+                int newsex = Integer.parseInt(scanner.nextLine());
+                System.out.println("you are creating account as member!");
+                System.out.println("enter your country");
+                String newcountry = scanner.nextLine();
+                System.out.println("enter your provience:");
+                String newprovience = scanner.nextLine();
+                System.out.println("enter your city:");
+                String newcity = scanner.nextLine();
+                System.out.println("enter your street:");
+                String newstreet = scanner.nextLine();
+                System.out.println("enter your plaque:");
+                int newplaque = Integer.parseInt(scanner.nextLine());
+                Address newaddress = new Address(newcountry, newprovience, newcity, newstreet, newplaque);
+                ArrayList<User> newfollowers = new ArrayList<>();
+                ArrayList<User> newfollowing = new ArrayList<>();
+                ArrayList<Report> newreports = new ArrayList<>();
+                ArrayList<Review> newreviews = new ArrayList<>();
+                ArrayList<Movie> newclassic = new ArrayList<>();
+                ArrayList<Movie> newwatchlist = new ArrayList<>();
+                ArrayList<Movie> newfavorite = new ArrayList<>();
+                ArrayList<Cast> newcastsfollowing = new ArrayList<>();
+                User.addUser(randomIdGen.nextInt(bound), newName
+                        , newlastname, newuserName, newpassword, newnationalid
+                        , newemail, newage, User.newUserSex(newsex), newaddress, newfollowers, newfollowing, UserRole.MEMBER,
+                        newreports, newreviews, newclassic, newwatchlist, newfavorite, newcastsfollowing, 1);
+                System.out.println("your account created as member successfuly!\nfor editor account or admin contact admin Thanks!\nyou can log in now\nhope you enjoy! :D");
+                System.out.println("-------------------------------------------------------------");
             }
             System.out.println("enter a key on your keyboard for continue:");
             String continueKey = scanner.nextLine();
