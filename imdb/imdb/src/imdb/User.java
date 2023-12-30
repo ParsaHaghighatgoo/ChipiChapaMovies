@@ -23,6 +23,7 @@ public class User {
     ArrayList<Movie> favorites;
     ArrayList<Cast> castsFollowing;
     int isActive;
+    ArrayList<String> editorrecoms;
 
     public User(int id, String name, String lastName, String userName, String passWord, int nationalID, String email, int age, Sex sex, Address address, ArrayList<User> followers, ArrayList<User> following, UserRole userRole, ArrayList<Report> reports, ArrayList<Review> reviews, ArrayList<Movie> classicsToSee, ArrayList<Movie> watchList, ArrayList<Movie> favorites, ArrayList<Cast> castsFollowing, int isActive) {
         this.id = id;
@@ -45,6 +46,104 @@ public class User {
         this.favorites = favorites;
         this.castsFollowing = castsFollowing;
         this.isActive = isActive;
+
+    }
+
+    public static void resetpass() {
+        System.out.println("enter ur username: ");
+        String checkUsername = main.scanner.nextLine();
+        System.out.println("enter your email");
+        String checkEmail = main.scanner.nextLine();
+        for (User user : main.usersDb) {
+            if (user.userName.equals(checkUsername)) {
+                if (user.email.equals(checkEmail)) {
+                    System.out.println("enter new pass:");
+                    String newpass = main.scanner.nextLine();
+                    user.passWord = newpass;
+                    System.out.println("password changed succesfully:D");
+                    return;
+                }
+                System.out.println("email and username dont match!");
+                return;
+            }
+        }
+        System.out.println("wrong username!");
+    }
+
+    public static void showMyProfile(User logedInUser) {
+        System.out.println(logedInUser);
+        System.out.println("if you want change ur profile enter: 1.changeProfile's detail 0.back");
+        int command = Integer.parseInt(main.scanner.nextLine());
+        if (command == 0) {
+            return;
+        } else if (command == 1) {
+            editMyProfile(logedInUser);
+        }
+        else{
+            System.out.println("wrong command executed!");
+            return;
+        }
+    }
+
+    private static void editMyProfile(User user){
+        System.out.println("you can edit :\n" +
+                "1. name\n" +
+                "2. lastName\n" +
+                "3. userName\n" +
+                "4. passWord\n" +
+                "5. nationalID\n" +
+                "6. String email\n" +
+                "7. age\n" +
+                "8. sex\n" +
+                "9. address\n"
+        );
+        int command = Integer.parseInt(main.scanner.nextLine());
+        if (command == 1) {
+            System.out.println("enter new name:");
+            String editname = main.scanner.nextLine();
+            user.name = editname;
+        } else if (command == 2) {
+            System.out.println("enter new lastname:");
+            String editlastname = main.scanner.nextLine();
+            user.lastName = editlastname;
+        } else if (command == 3) {
+            System.out.println("enter new username:");
+            String editusername = main.scanner.nextLine();
+            user.userName = editusername;
+        } else if (command == 4) {
+            System.out.println("enter new password:");
+            String editpass = main.scanner.nextLine();
+            user.passWord = editpass;
+        } else if (command == 5) {
+            System.out.println("enter new national id:");
+            int editNid = Integer.parseInt(main.scanner.nextLine());
+            user.nationalID = editNid;
+        } else if (command == 6) {
+            System.out.println("enter new email:");
+            String editemail = main.scanner.nextLine();
+            user.email = editemail;
+        } else if (command == 7) {
+            System.out.println("enter new age:");
+            int editage = Integer.parseInt(main.scanner.nextLine());
+            user.age = editage;
+        } else if (command == 8) {
+            System.out.println("enter new sex:\n1.male\n2.female\n3.others");
+            int editsex = Integer.parseInt(main.scanner.nextLine());
+            user.sex = newUserSex(editsex);
+        } else if (command == 9) {
+            System.out.println("enter the user's country");
+            String newcountry = main.scanner.nextLine();
+            System.out.println("enter the user's provience:");
+            String newprovience = main.scanner.nextLine();
+            System.out.println("enter the user's city:");
+            String newcity = main.scanner.nextLine();
+            System.out.println("enter the user's street:");
+            String newstreet = main.scanner.nextLine();
+            System.out.println("enter the user's plaque:");
+            int newplaque = Integer.parseInt(main.scanner.nextLine());
+            Address newaddress = new Address(newcountry, newprovience, newcity, newstreet, newplaque);
+            user.address = newaddress;
+        }
     }
 
     @Override
@@ -69,6 +168,8 @@ public class User {
                 ", watchList=" + watchList +
                 ", favorites=" + favorites +
                 ", castsFollowing=" + castsFollowing +
+                ", isActive=" + isActive +
+                ", editorRecoms=" + editorrecoms +
                 '}';
     }
 
@@ -93,15 +194,17 @@ public class User {
                 System.out.println("-------------------------------------------------------------");
                 System.out.println("0.sign out\n1.see all users\n2.delete user\n3.add user\n" +
                         "4.ban user\n5.edit user" +
-                        "\n6.list of movies\n7.delete movie\n8.add movie\n9.edit movie");
+                        "\n6.list of movies\n7.delete movie\n8.add movie\n9.edit movie\n10.search a user" +
+                        "\n11.search a movie\n12.approve editor's edit\n13.see all casts\n14.delete casts" +
+                        "\n15.add cast\n16.edit cast\n17.show my profile and profile edit setting\n18.search a cast");
                 return;
             case 2:
                 System.out.println("Enter your command:");
-                System.out.println("member");
+                System.out.println("1.show my profile and profile edit setting");
                 return;
             case 3:
                 System.out.println("Enter your command:");
-                System.out.println("editor");
+                System.out.println("1.suggest an edit to admin\n2.show my profile and profile edit setting");
                 return;
             default:
                 return;
@@ -117,10 +220,26 @@ public class User {
         System.out.println("-------------------------------------------------------------");
     }
 
+    public static void suggestToAdmin(User user) {
+        System.out.println("write your suggestion: ");
+        String newsug = main.scanner.nextLine();
+        newsug = user.userName + "suggest this to admin :" + newsug;
+        main.usersDb.get(0).editorrecoms.add(newsug);
+    }
+
     public static void seeAllUser() {
         int cnt = 1;
         for (User user : main.usersDb) {
             System.out.println(cnt + "- " + user.userName);
+            cnt++;
+        }
+        System.out.println("-------------------------------------------------------------");
+    }
+
+    public static void seeAllCasts() {
+        int cnt = 1;
+        for (Cast cast : main.castDb) {
+            System.out.println(cnt + "- " + cast.name + " " + cast.lastName);
             cnt++;
         }
         System.out.println("-------------------------------------------------------------");
@@ -153,7 +272,7 @@ public class User {
                 } else if (command == 3) {
                     System.out.println("enter new rate:");
                     int editRate = Integer.parseInt(main.scanner.nextLine());
-                    movie.rate = editRate;
+                    movie.imdbRate = editRate;
                 } else if (command == 4) {
                     System.out.println("enter new trailer url:");
                     String edittrailer = main.scanner.nextLine();
@@ -175,22 +294,21 @@ public class User {
                             "delete one of them or add one report enter your command:" +
                             "\n1.remove one\n2.add one");
                     int cnt = 0;
-                    for (Report report : movie.reports){
-                        System.out.println(cnt+"."+report.title);
+                    for (Report report : movie.reports) {
+                        System.out.println(cnt + "." + report.title);
                         cnt++;
                     }
                     int newcommand = Integer.parseInt(main.scanner.nextLine());
-                    if (newcommand == 1){
+                    if (newcommand == 1) {
                         System.out.println("enter the title of report you want to delete:");
                         String newtitledelete = main.scanner.nextLine();
-                        for(Report report:movie.reports){
-                            if(report.title.equals(newtitledelete)){
+                        for (Report report : movie.reports) {
+                            if (report.title.equals(newtitledelete)) {
                                 movie.reports.remove(report);
                                 break;
                             }
                         }
-                    }
-                    else if(newcommand == 2){
+                    } else if (newcommand == 2) {
                         System.out.println("enter new title for it:");
                         String newtitle = main.scanner.nextLine();
                         System.out.println("enter new about for it:");
@@ -198,46 +316,146 @@ public class User {
                         System.out.println("1.spam 2.violence 3.copyright 4.personal 5.other");
                         int newtype = Integer.parseInt(main.scanner.nextLine());
                         Report newreportadd = new Report(main.randomIdGen.nextInt(main.bound),
-                                newtitle,newabout,Report.createtype(newtype));
+                                newtitle, newabout, Report.createtype(newtype), main.usersDb.get(0));
                         movie.reports.add(newreportadd);
                         main.reportsDb.add(newreportadd);
-                        main.logedInUser.reports.add(newreportadd);
+                        main.usersDb.get(0).reports.add(newreportadd);
                     }
-                }
-//                else if (command == 4) {
-//
-//                }
-                else if (command == 10) {
+                } else if (command == 9) {
+                    boolean nspoil;
+                    boolean nhelp;
+                    System.out.println("there is list of this movie reviews:\nif you want to" +
+                            "delete one of them or add one report enter your command:" +
+                            "\n1.remove one\n2.add one");
+                    int cnt = 0;
+                    for (Review review : movie.reviews) {
+                        System.out.println(cnt + "." + review.title);
+                        cnt++;
+                    }
+                    int newcommand = Integer.parseInt(main.scanner.nextLine());
+                    if (newcommand == 1) {
+                        System.out.println("enter the title of report you want to delete:");
+                        String newtitledelete = main.scanner.nextLine();
+                        for (Review review : movie.reviews) {
+                            if (review.title.equals(newtitledelete)) {
+                                movie.reports.remove(review);
+                                break;
+                            }
+                        }
+                    } else if (newcommand == 2) {
+                        System.out.println("enter new title for it:");
+                        String newtitle = main.scanner.nextLine();
+                        System.out.println("enter new about for it:");
+                        String newabout = main.scanner.nextLine();
+                        System.out.println("is it helpful?\n1.yes\n2.no");
+                        int newhelp = Integer.parseInt(main.scanner.nextLine());
+                        if (newhelp == 1) {
+                            nhelp = true;
+                        } else {
+                            nhelp = false;
+                        }
+                        System.out.println("is it spoiler?\n1.yes\n2.no");
+                        int newspolier = Integer.parseInt(main.scanner.nextLine());
+                        if (newspolier == 1) {
+                            nspoil = true;
+                        } else {
+                            nspoil = false;
+                        }
+                        Review newreview = new Review(main.randomIdGen.nextInt(main.bound),
+                                newtitle, newabout, main.usersDb.get(0), nhelp, nspoil,0);
+                        movie.reviews.add(newreview);
+                        main.reviewsDb.add(newreview);
+                        main.usersDb.get(0).reviews.add(newreview);
+                    }
+                } else if (command == 10) {
                     System.out.println("enter new soundtrack url:");
                     String editsound = main.scanner.nextLine();
                     movie.soundTrack = editsound;
+                } else if (command == 11) {
+                    System.out.println("there is list of this movie casts:\nif you want to" +
+                            "delete one of them or add one cast enter your command:" +
+                            "\n1.remove one\n2.add one\n");
+                    int cnt = 0;
+                    for (Cast cast : movie.casts) {
+                        System.out.println(cnt + "." + cast.name);
+                        cnt++;
+                    }
+                    int newcommand = Integer.parseInt(main.scanner.nextLine());
+                    if (newcommand == 1) {
+                        System.out.println("enter the name of cast you want to delete:");
+                        String newtitledelete = main.scanner.nextLine();
+                        for (Cast cast : movie.casts) {
+                            if (cast.name.equals(newtitledelete)) {
+                                movie.casts.remove(cast);
+                                break;
+                            }
+                        }
+                    } else if (newcommand == 2) {
+                        System.out.println("enter new name for it:");
+                        String newname = main.scanner.nextLine();
+                        System.out.println("enter new lastname for it:");
+                        String newlastname = main.scanner.nextLine();
+                        System.out.println("new age");
+                        int newage = Integer.parseInt(main.scanner.nextLine());
+                        System.out.println("enter your gender:");
+                        System.out.println("which one you want\n1.male\n2.female\n3.nonbinary\n4.other");
+                        int newsex = Integer.parseInt(main.scanner.nextLine());
+                        ArrayList<Movie> movies = new ArrayList<>();
+                        ArrayList<User> follewrs = new ArrayList<>();
+                        Cast newcast = new Cast(main.randomIdGen.nextInt(main.bound), newname, newlastname, newage, User.newUserSex(newsex), movies
+                                , Cast.castRolecreate(), follewrs);
+                        main.castDb.add(newcast);
+                        movie.casts.add(newcast);
+                    } else if (command == 12) {
+                        System.out.println("enter new play link:");
+                        String editplay = main.scanner.nextLine();
+                        movie.play = editplay;
+                    } else if (command == 13) {
+                        System.out.println("enter new number of reviews:");
+                        int newnumor = Integer.parseInt(main.scanner.nextLine());
+                        movie.numberOfReviews = newnumor;
+                    } else if (command == 14) {
+                        System.out.println("enter new photos url:");
+                        String editphotos = main.scanner.nextLine();
+                        movie.photos = editphotos;
+                    } else if (command == 15) {
+                        System.out.println("enter new movie genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
+                        int newg = Integer.parseInt(main.scanner.nextLine());
+                        movie.movieGenres = User.newgenre(newg);
+                    }
+                    break;
                 }
-//                else if (command == 4) {
-//
-//                }
-                else if (command == 12) {
-                    System.out.println("enter new play link:");
-                    String editplay = main.scanner.nextLine();
-                    movie.play = editplay;
-                } else if (command == 13) {
-                    System.out.println("enter new number of reviews:");
-                    int newnumor = Integer.parseInt(main.scanner.nextLine());
-                    movie.numberOfReviews = newnumor;
-                } else if (command == 14) {
-                    System.out.println("enter new photos url:");
-                    String editphotos = main.scanner.nextLine();
-                    movie.photos = editphotos;
-                } else if (command == 15) {
-                    System.out.println("enter new movie genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
-                    int newg = Integer.parseInt(main.scanner.nextLine());
-                    movie.movieGenres = User.newgenre(newg);
-                }
+            }
+        }
+    }
 
-
+    public static void seeAUser(String userName) {
+        for (User user : main.usersDb) {
+            if (user.userName.equals(userName)) {
+                System.out.println(user);
                 break;
             }
         }
     }
+
+    public static void seeACast(String userName) {
+        for (Cast cast : main.castDb) {
+            if (cast.name.equals(userName)) {
+                System.out.println(cast);
+                break;
+            }
+        }
+    }
+
+    public static void seeAMovie(String title) {
+        for (Movie movie : main.moviesDb) {
+            if (movie.title.equals(title)) {
+                System.out.println(movie);
+                break;
+            }
+        }
+    }
+
 
     public static void editUser(String userName) {
         for (User user : main.usersDb) {
@@ -316,6 +534,47 @@ public class User {
         return;
     }
 
+    public static void editCast(String name) {
+        for (Cast cast : main.castDb) {
+            if (cast.name.equals(name)) {
+                System.out.println("edit :\n" +
+                        "1. id\n" +
+                        "2. name\n" +
+                        "3. lastName\n" +
+                        "4. age\n" +
+                        "5. sex\n" +
+                        "6. role\n"
+                );
+                int command = Integer.parseInt(main.scanner.nextLine());
+                if (command == 1) {
+                    System.out.println("enter new id:");
+                    int editId = Integer.parseInt(main.scanner.nextLine());
+                    cast.id = editId;
+                } else if (command == 2) {
+                    System.out.println("enter new name:");
+                    String editname = main.scanner.nextLine();
+                    cast.name = editname;
+                } else if (command == 3) {
+                    System.out.println("enter new lastname:");
+                    String editlastname = main.scanner.nextLine();
+                    cast.lastName = editlastname;
+                } else if (command == 4) {
+                    System.out.println("enter new age:");
+                    int editage = Integer.parseInt(main.scanner.nextLine());
+                    cast.age = editage;
+                } else if (command == 5) {
+                    System.out.println("enter new sex:\n1.male\n2.female\n3.others");
+                    int editsex = Integer.parseInt(main.scanner.nextLine());
+                    cast.sex = newUserSex(editsex);
+                } else if (command == 6) {
+                    cast.role = Cast.castRolecreate();
+                }
+                break;
+            }
+        }
+        return;
+    }
+
     public static void banUser(String userName) {
         for (User user : main.usersDb) {
             if (user.userName.equals(userName)) {
@@ -334,6 +593,17 @@ public class User {
             if (userr.userName.equals(username)) {
                 main.usersDb.remove(userr);
                 System.out.println("user " + username + " deleted successfuly!");
+                System.out.println("-------------------------------------------------------------");
+                return;
+            }
+        }
+    }
+
+    public static void deleteCast(String name) {
+        for (Cast cast : main.castDb) {
+            if (cast.name.equals(name)) {
+                main.castDb.remove(cast);
+                System.out.println("cast " + name + " deleted successfuly!");
                 System.out.println("-------------------------------------------------------------");
                 return;
             }
@@ -413,10 +683,18 @@ public class User {
                                 String play,
                                 int numberOfReviews,
                                 String photos,
-                                MovieGenres movieGenres) {
+                                MovieGenres movieGenres,String language) {
         Movie newMovie = new Movie(id, title, rate, trailer, summry, poster, realeseDate, reports
-                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres);
+                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres,language);
         main.moviesDb.add(newMovie);
+        for (Cast castmoive :newMovie.casts){
+            for (Cast castdb : main.castDb){
+                if (castdb.equals(castmoive)){
+                    castdb.movies.add(newMovie);
+                    break;
+                }
+            }
+        }
     }
 
     public int getId() {

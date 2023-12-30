@@ -2,15 +2,17 @@ package imdb;
 
 public class Report {
     int id;
+    User user;
     String title;
     String about;
     ReportType reportType;
 
-    public Report(int id, String title, String about, ReportType reportType) {
+    public Report(int id, String title, String about, ReportType reportType,User user) {
         this.id = id;
         this.title = title;
         this.about = about;
         this.reportType = reportType;
+        this.user = user;
     }
 
     public static ReportType createtype(int newt){

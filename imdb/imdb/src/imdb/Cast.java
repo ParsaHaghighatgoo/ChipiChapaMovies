@@ -100,4 +100,34 @@ public class Cast {
         this.role = role;
         this.userFollowers = userFollowers;
     }
+
+    public static CastRole castRolecreate(){
+        System.out.println("choose one of them: 1.DIRECTOR 2.ACTOR 3.WRITER");
+        int newcastrole = Integer.parseInt(main.scanner.nextLine());
+        if(newcastrole == 1){
+            return CastRole.DIRECTOR;
+        } else if (newcastrole == 2) {
+            return CastRole.ACTOR;
+        }
+        else {
+            return CastRole.WRITER;
+        }
+    }
+
+    public static void addCast(){
+        System.out.println("enter new name for it:");
+        String newname = main.scanner.nextLine();
+        System.out.println("enter new lastname for it:");
+        String newlastname = main.scanner.nextLine();
+        System.out.println("new age");
+        int newage = Integer.parseInt(main.scanner.nextLine());
+        System.out.println("enter your gender:");
+        System.out.println("which one you want\n1.male\n2.female\n3.nonbinary\n4.other");
+        int newsex = Integer.parseInt(main.scanner.nextLine());
+        ArrayList<Movie> movies = new ArrayList<>();
+        ArrayList<User> follewrs = new ArrayList<>();
+        Cast newcast = new Cast(main.randomIdGen.nextInt(main.bound), newname, newlastname, newage, User.newUserSex(newsex), movies
+                , Cast.castRolecreate(), follewrs);
+        main.castDb.add(newcast);
+    }
 }
