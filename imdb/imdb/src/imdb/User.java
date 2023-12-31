@@ -78,14 +78,13 @@ public class User {
             return;
         } else if (command == 1) {
             editMyProfile(logedInUser);
-        }
-        else{
+        } else {
             System.out.println("wrong command executed!");
             return;
         }
     }
 
-    private static void editMyProfile(User user){
+    private static void editMyProfile(User user) {
         System.out.println("you can edit :\n" +
                 "1. name\n" +
                 "2. lastName\n" +
@@ -146,32 +145,7 @@ public class User {
         }
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                ", nationalID=" + nationalID +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", address=" + address +
-                ", followers=" + followers +
-                ", following=" + following +
-                ", userRole=" + userRole +
-                ", reports=" + reports +
-                ", reviews=" + reviews +
-                ", classicsToSee=" + classicsToSee +
-                ", watchList=" + watchList +
-                ", favorites=" + favorites +
-                ", castsFollowing=" + castsFollowing +
-                ", isActive=" + isActive +
-                ", editorRecoms=" + editorrecoms +
-                '}';
-    }
+
 
     public static User login(String usreName, String passWord) {
         for (User user : main.usersDb) {
@@ -200,11 +174,12 @@ public class User {
                 return;
             case 2:
                 System.out.println("Enter your command:");
-                System.out.println("1.show my profile and profile edit setting");
+                System.out.println("0.signout\n1.show my profile and profile edit setting\n2.search a movie\n3.search a cast" +
+                        "\n4.search a user");
                 return;
             case 3:
                 System.out.println("Enter your command:");
-                System.out.println("1.suggest an edit to admin\n2.show my profile and profile edit setting");
+                System.out.println("0.signout\n1.suggest an edit to admin\n2.show my profile and profile edit setting");
                 return;
             default:
                 return;
@@ -362,7 +337,7 @@ public class User {
                             nspoil = false;
                         }
                         Review newreview = new Review(main.randomIdGen.nextInt(main.bound),
-                                newtitle, newabout, main.usersDb.get(0), nhelp, nspoil,0);
+                                newtitle, newabout, main.usersDb.get(0), nhelp, nspoil, 0);
                         movie.reviews.add(newreview);
                         main.reviewsDb.add(newreview);
                         main.usersDb.get(0).reviews.add(newreview);
@@ -432,11 +407,21 @@ public class User {
     public static void seeAUser(String userName) {
         for (User user : main.usersDb) {
             if (user.userName.equals(userName)) {
-                System.out.println(user);
+                System.out.println(user.following.get(0));
                 break;
             }
         }
     }
+
+    public static User seeAUserForMember(String userName) {
+        for (User user : main.usersDb) {
+            if (user.userName.equals(userName)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 
     public static void seeACast(String userName) {
         for (Cast cast : main.castDb) {
@@ -447,6 +432,16 @@ public class User {
         }
     }
 
+    public static Cast seeACastForUser(String userName) {
+        for (Cast cast : main.castDb) {
+            if (cast.name.equals(userName)) {
+                return cast;
+            }
+        }
+        return null;
+    }
+
+
     public static void seeAMovie(String title) {
         for (Movie movie : main.moviesDb) {
             if (movie.title.equals(title)) {
@@ -454,6 +449,15 @@ public class User {
                 break;
             }
         }
+    }
+
+    public static Movie seeAMovieForUser(String title) {
+        for (Movie movie : main.moviesDb) {
+            if (movie.title.equals(title)) {
+                return movie;
+            }
+        }
+        return null;
     }
 
 
@@ -683,13 +687,13 @@ public class User {
                                 String play,
                                 int numberOfReviews,
                                 String photos,
-                                MovieGenres movieGenres,String language) {
+                                MovieGenres movieGenres, String language) {
         Movie newMovie = new Movie(id, title, rate, trailer, summry, poster, realeseDate, reports
-                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres,language);
+                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres, language);
         main.moviesDb.add(newMovie);
-        for (Cast castmoive :newMovie.casts){
-            for (Cast castdb : main.castDb){
-                if (castdb.equals(castmoive)){
+        for (Cast castmoive : newMovie.casts) {
+            for (Cast castdb : main.castDb) {
+                if (castdb.equals(castmoive)) {
                     castdb.movies.add(newMovie);
                     break;
                 }
@@ -847,6 +851,15 @@ public class User {
 
     public void setCastsFollowing(ArrayList<Cast> castsFollowing) {
         this.castsFollowing = castsFollowing;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                ", followers=" + followers +
+                ", following=" + following +
+
+                '}';
     }
 
 }

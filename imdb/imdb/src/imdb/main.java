@@ -34,12 +34,16 @@ public class main {
 
 
         int userID = randomIdGen.nextInt(bound);
+        ArrayList<Movie> newWatchList = new ArrayList<>();
+        ArrayList<User> newfollowers = new ArrayList<>();
+        ArrayList<User> newfollowings = new ArrayList<>();
+
         User user = new User(userID, "user", "test", "userTest",
-                "444", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, null, null, UserRole.MEMBER,
-                null, null, null, null, null
+                "444", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, null, newfollowings, UserRole.MEMBER,
+                null, null, null, newWatchList, null
                 , null, 1);
-        User user2 = new User(userID + 2, "user2", "test", "userTest",
-                "445", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, null, null, UserRole.MEMBER,
+        User user2 = new User(userID + 2, "user2", "test", "userTest2",
+                "445", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, newfollowers, null, UserRole.MEMBER,
                 null, null, null, null, null
                 , null, 1);
         User editor = new User(userID, "editor", "eidtor", "editor",
@@ -52,13 +56,13 @@ public class main {
         String[] rolelist = {"admin", "member", "editor", "cast"};
 
         ArrayList<Movie> castTestMovie = new ArrayList<>();
-        Cast castTest= new Cast(userID,"cast","cast",1,Sex.MALE,castTestMovie,CastRole.DIRECTOR,null);
+        Cast castTest = new Cast(userID, "cast", "cast", 1, Sex.MALE, castTestMovie, CastRole.DIRECTOR, null);
         castDb.add(castTest);
 
         ArrayList<Cast> movieTestCasts = new ArrayList<>();
         movieTestCasts.add(castTest);
         Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", randomIdGen.nextInt(100), "", "", "", "", null
-                , null, "", null, "", 0, "", MovieGenres.ACION,"english");
+                , null, "", null, "", 0, "", MovieGenres.ACION, "english");
         moviesDb.add(movieTest);
 
         while (true) {
@@ -130,7 +134,7 @@ public class main {
                                 System.out.println("enter the user's plaque:");
                                 int newplaque = Integer.parseInt(scanner.nextLine());
                                 Address newaddress = new Address(newcountry, newprovience, newcity, newstreet, newplaque);
-                                ArrayList<User> newfollowers = new ArrayList<>();
+                                ArrayList<User> newfollowerss = new ArrayList<>();
                                 ArrayList<User> newfollowing = new ArrayList<>();
                                 ArrayList<Report> newreports = new ArrayList<>();
                                 ArrayList<Review> newreviews = new ArrayList<>();
@@ -141,7 +145,7 @@ public class main {
 
                                 User.addUser(randomIdGen.nextInt(bound), newName
                                         , newlastname, newuserName, newpassword, newnationalid
-                                        , newemail, newage, User.newUserSex(newsex), newaddress, newfollowers, newfollowing, User.newUserRole(newrole),
+                                        , newemail, newage, User.newUserSex(newsex), newaddress, newfollowerss, newfollowing, User.newUserRole(newrole),
                                         newreports, newreviews, newclassic, newwatchlist, newfavorite, newcastsfollowing, 1);
 
                                 System.out.println("user added successfuly!");
@@ -199,7 +203,7 @@ public class main {
                                 System.out.println("enter the movie language: ");
                                 String newLanguage = scanner.nextLine();
                                 User.addmovie(randomIdGen.nextInt(bound), newtitle, newrate, newtrailer, newsummry, newposter, newrealesedare
-                                        , newreports, newreviews, newsoundtrack, newcasts, newplay, newnumofr, newphotos, newmoviegenre,newLanguage);
+                                        , newreports, newreviews, newsoundtrack, newcasts, newplay, newnumofr, newphotos, newmoviegenre, newLanguage);
                                 System.out.println("movie added successfuly!");
                                 System.out.println("-------------------------------------------------------------");
                             } else if (command == 9) {
@@ -239,14 +243,77 @@ public class main {
                                 System.out.println("enter name of the cast you wanna see: ");
                                 User.seeACast(scanner.nextLine());
                             }
-                        }
-                        else if(logedInUser.userRole.equals(UserRole.EDITOR)){
+                        } else if (logedInUser.userRole.equals(UserRole.EDITOR)) {
                             command = Integer.parseInt(scanner.nextLine());
-                            if(command == 1){
+                            if (command == 1) {
                                 User.suggestToAdmin(logedInUser);
                             } else if (command == 2) {
                                 User.showMyProfile(logedInUser);
+                            } else if (command == 0) {
+                                break;
                             }
+                        } else if (logedInUser.userRole.equals(UserRole.MEMBER)) {
+                            command = Integer.parseInt(scanner.nextLine());
+                            if (command == 1) {
+                                User.showMyProfile(logedInUser);
+                            } else if (command == 2) {
+                                System.out.println("enter name of desired movie:");
+                                String newsearch = scanner.nextLine();
+                                Movie desiredMovie = User.seeAMovieForUser(newsearch);
+                                if (desiredMovie == null) {
+                                    System.out.println("cant find this movie!");
+                                } else {
+                                    System.out.println(desiredMovie);
+                                    System.out.println("you can add this movie to :" +
+                                            "\n1.your favorites" +
+                                            "\n2.your classicsToSee" +
+                                            "\n3.your watchlist" +
+                                            "\n4.back");
+                                    int newCommand = Integer.parseInt(scanner.nextLine());
+                                    if (newCommand == 1) {
+                                        logedInUser.favorites.add(desiredMovie);
+                                    } else if (newCommand == 2) {
+                                        logedInUser.classicsToSee.add(desiredMovie);
+                                    } else if (newCommand == 3) {
+                                        logedInUser.watchList.add(desiredMovie);
+                                    }
+                                }
+                            } else if (command == 3) {
+                                System.out.println("enter name of desired cast:");
+                                String newsearch = scanner.nextLine();
+                                Cast desiredCast = User.seeACastForUser(newsearch);
+                                if (desiredCast == null) {
+                                    System.out.println("can't find this cast!");
+                                } else {
+                                    System.out.println(desiredCast);
+                                    System.out.println("you can : 1.follow this cast 2.back");
+                                    int newCommand = Integer.parseInt(scanner.nextLine());
+                                    if (newCommand == 1) {
+                                        desiredCast.userFollowers.add(logedInUser);
+                                        logedInUser.castsFollowing.add(desiredCast);
+                                    }
+                                }
+                            } else if (command == 4) {
+                                System.out.println("enter name of desired user:");
+                                String newsearch = scanner.nextLine();
+                                User desiredUser = User.seeAUserForMember(newsearch);
+                                if (desiredUser == null) {
+                                    System.out.println("cant find this user!");
+                                } else if (desiredUser.userRole == UserRole.ADMIN || desiredUser.userRole == UserRole.EDITOR) {
+                                    System.out.println("you cant see this user's profile!");
+                                } else {
+                                    System.out.println(desiredUser);
+                                    System.out.println("you can : 1.follow this user 2.back");
+                                    int newCommand = Integer.parseInt(scanner.nextLine());
+                                    if (newCommand == 1) {
+                                        desiredUser.followers.add(logedInUser);
+                                        logedInUser.following.add(desiredUser);
+                                    }
+                                }
+                            } else if (command == 0) {
+                                break;
+                            }
+
                         }
                     }
 
@@ -287,7 +354,7 @@ public class main {
                 System.out.println("enter your plaque:");
                 int newplaque = Integer.parseInt(scanner.nextLine());
                 Address newaddress = new Address(newcountry, newprovience, newcity, newstreet, newplaque);
-                ArrayList<User> newfollowers = new ArrayList<>();
+                ArrayList<User> newfollowerss = new ArrayList<>();
                 ArrayList<User> newfollowing = new ArrayList<>();
                 ArrayList<Report> newreports = new ArrayList<>();
                 ArrayList<Review> newreviews = new ArrayList<>();
@@ -297,12 +364,11 @@ public class main {
                 ArrayList<Cast> newcastsfollowing = new ArrayList<>();
                 User.addUser(randomIdGen.nextInt(bound), newName
                         , newlastname, newuserName, newpassword, newnationalid
-                        , newemail, newage, User.newUserSex(newsex), newaddress, newfollowers, newfollowing, UserRole.MEMBER,
+                        , newemail, newage, User.newUserSex(newsex), newaddress, newfollowerss, newfollowing, UserRole.MEMBER,
                         newreports, newreviews, newclassic, newwatchlist, newfavorite, newcastsfollowing, 1);
                 System.out.println("your account created as member successfuly!\nfor editor account or admin contact admin Thanks!\nyou can log in now\nhope you enjoy! :D");
                 System.out.println("-------------------------------------------------------------");
-            }
-            else if(command == 4){
+            } else if (command == 4) {
                 User.resetpass();
             }
             System.out.println("enter a key on your keyboard for continue:");
