@@ -302,7 +302,14 @@ public class main {
                                 } else if (desiredUser.userRole == UserRole.ADMIN || desiredUser.userRole == UserRole.EDITOR) {
                                     System.out.println("you cant see this user's profile!");
                                 } else {
-                                    System.out.println(desiredUser);
+                                    int printSizeDesiredFollowingSize;
+                                    if (desiredUser.following == null) {
+                                        printSizeDesiredFollowingSize = 0;
+                                    } else {
+                                        printSizeDesiredFollowingSize = desiredUser.following.size();
+
+                                    }
+                                    System.out.println(printSizeDesiredFollowingSize);
                                     System.out.println("you can : 1.follow this user 2.back");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
