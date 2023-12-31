@@ -314,6 +314,7 @@ public class main {
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
                                         desiredUser.followers.add(logedInUser);
+                                        //:D
                                         logedInUser.following.add(desiredUser);
                                     }
                                 }
