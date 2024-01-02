@@ -61,8 +61,9 @@ public class main {
 
         ArrayList<Cast> movieTestCasts = new ArrayList<>();
         movieTestCasts.add(castTest);
-        Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", randomIdGen.nextInt(100), "", "", "", "", null
-                , null, "", null, "", 0, "", MovieGenres.ACION, "english");
+        ArrayList<Integer> TestuserRates = new ArrayList<>();
+        Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", randomIdGen.nextInt(100), "", "", "", "2,2,2", null
+                , null, "", null, "", 0, "", MovieGenres.ACION, "english", TestuserRates, 0);
         moviesDb.add(movieTest);
 
         while (true) {
@@ -202,8 +203,11 @@ public class main {
                                 MovieGenres newmoviegenre = User.newgenre(newg);
                                 System.out.println("enter the movie language: ");
                                 String newLanguage = scanner.nextLine();
+                                ArrayList<Integer> newUserRates = new ArrayList<>();
+
                                 User.addmovie(randomIdGen.nextInt(bound), newtitle, newrate, newtrailer, newsummry, newposter, newrealesedare
-                                        , newreports, newreviews, newsoundtrack, newcasts, newplay, newnumofr, newphotos, newmoviegenre, newLanguage);
+                                        , newreports, newreviews, newsoundtrack, newcasts, newplay, newnumofr, newphotos, newmoviegenre, newLanguage,
+                                        newUserRates);
                                 System.out.println("movie added successfuly!");
                                 System.out.println("-------------------------------------------------------------");
                             } else if (command == 9) {
@@ -252,7 +256,10 @@ public class main {
                             } else if (command == 0) {
                                 break;
                             }
-                        } else if (logedInUser.userRole.equals(UserRole.MEMBER)) {
+                        }
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////
+                        // MEMBER
+                        else if (logedInUser.userRole.equals(UserRole.MEMBER)) {
                             command = Integer.parseInt(scanner.nextLine());
                             if (command == 1) {
                                 User.showMyProfile(logedInUser);
@@ -268,7 +275,12 @@ public class main {
                                             "\n1.your favorites" +
                                             "\n2.your classicsToSee" +
                                             "\n3.your watchlist" +
-                                            "\n4.back");
+                                            "\n4.you can rate this movie" +
+                                            "\n5.write a review for this movie :D" +
+                                            "\n6.Report this movie :(" +
+                                            "\n7.Contribute trivia, goofs, quotes, soundtrack info for this movie" +
+                                            "\n8.search a movie with filters(advance search)" +
+                                            "\n9.back");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
                                         logedInUser.favorites.add(desiredMovie);
@@ -276,7 +288,24 @@ public class main {
                                         logedInUser.classicsToSee.add(desiredMovie);
                                     } else if (newCommand == 3) {
                                         logedInUser.watchList.add(desiredMovie);
+                                    } else if (newCommand == 4) {
+                                        System.out.println("enter your rate , your rate should be in range of 5 to 10 ");
+                                        int yourRateForThisMovie = Integer.parseInt(scanner.nextLine());
+                                        desiredMovie.userRates.add(yourRateForThisMovie);
+                                    } else if (newCommand == 5) {
+                                        Review.createAReview(desiredMovie, logedInUser);
+                                        desiredMovie.numberOfReviews += 1;
+                                    } else if (newCommand == 6) {
+                                        Report.createReport(desiredMovie, logedInUser);
+                                    } else if (newCommand == 7) {
+                                        System.out.println("Enter your contribution: ");
+                                        String newContrbution = scanner.nextLine();
+                                        User.suggestToAdminAsMember(logedInUser , newContrbution);
+                                    } else if (newCommand == 8 ) {
+                                        User.advanceSearch();
                                     }
+
+
                                 }
                             } else if (command == 3) {
                                 System.out.println("enter name of desired cast:");

@@ -146,7 +146,6 @@ public class User {
     }
 
 
-
     public static User login(String usreName, String passWord) {
         for (User user : main.usersDb) {
             if (user.userName.equals(usreName) && user.passWord.equals(passWord)) {
@@ -202,6 +201,13 @@ public class User {
         main.usersDb.get(0).editorrecoms.add(newsug);
     }
 
+
+    public static void suggestToAdminAsMember(User user, String newsug) {
+        newsug = user.userName + "as member for contribution suggest this to admin :" + newsug;
+        main.usersDb.get(0).editorrecoms.add(newsug);
+    }
+
+
     public static void seeAllUser() {
         int cnt = 1;
         for (User user : main.usersDb) {
@@ -218,6 +224,44 @@ public class User {
             cnt++;
         }
         System.out.println("-------------------------------------------------------------");
+    }
+
+    public static void advanceSearch() {
+        System.out.println("catgories for advance search:" +
+                "1.search with filters" +
+                "2.");
+        System.out.println("which one: " +
+                "1.search with realsedate" +
+                "2.search with genre" +
+                "3.search with rating" +
+                "4.back");
+        int whichFilter = Integer.parseInt(main.scanner.nextLine());
+        if (whichFilter == 1) {
+            System.out.println("enter ur desired year: like mm/dd/yy ");
+            String newYear = main.scanner.nextLine();
+            for (Movie movie : main.moviesDb){
+                if (movie.realeseDate.equals(newYear)){
+                    System.out.println(movie.title);
+                }
+            }
+        } else if (whichFilter == 2) {
+            System.out.println("enter genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
+            int newg = Integer.parseInt(main.scanner.nextLine());
+            MovieGenres newmoviegenre = User.newgenre(newg);
+            for (Movie movie : main.moviesDb){
+                if (movie.movieGenres.equals(newmoviegenre)){
+                    System.out.println(movie.title);
+                }
+            }
+        } else if (whichFilter == 3) {
+            System.out.println("enter ur desired rate:");
+            double newImdbRate = Double.parseDouble(main.scanner.nextLine());
+            for (Movie movie : main.moviesDb){
+                if (movie.imdbRate == newImdbRate){
+                    System.out.println(movie.title);
+                }
+            }
+        }
     }
 
     public int getIsActive() {
@@ -291,7 +335,7 @@ public class User {
                         System.out.println("1.spam 2.violence 3.copyright 4.personal 5.other");
                         int newtype = Integer.parseInt(main.scanner.nextLine());
                         Report newreportadd = new Report(main.randomIdGen.nextInt(main.bound),
-                                newtitle, newabout, Report.createtype(newtype), main.usersDb.get(0));
+                                newtitle, newabout, Report.createtype(newtype), main.usersDb.get(0), movie);
                         movie.reports.add(newreportadd);
                         main.reportsDb.add(newreportadd);
                         main.usersDb.get(0).reports.add(newreportadd);
@@ -337,7 +381,7 @@ public class User {
                             nspoil = false;
                         }
                         Review newreview = new Review(main.randomIdGen.nextInt(main.bound),
-                                newtitle, newabout, main.usersDb.get(0), nhelp, nspoil, 0);
+                                newtitle, newabout, main.usersDb.get(0), nhelp, nspoil, 0, movie);
                         movie.reviews.add(newreview);
                         main.reviewsDb.add(newreview);
                         main.usersDb.get(0).reviews.add(newreview);
@@ -687,9 +731,9 @@ public class User {
                                 String play,
                                 int numberOfReviews,
                                 String photos,
-                                MovieGenres movieGenres, String language) {
+                                MovieGenres movieGenres, String language, ArrayList<Integer> userRates) {
         Movie newMovie = new Movie(id, title, rate, trailer, summry, poster, realeseDate, reports
-                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres, language);
+                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres, language, userRates, 0);
         main.moviesDb.add(newMovie);
         for (Cast castmoive : newMovie.casts) {
             for (Cast castdb : main.castDb) {

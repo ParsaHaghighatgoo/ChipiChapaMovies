@@ -20,10 +20,13 @@ public class Movie {
     String photos;
     MovieGenres movieGenres;
     String language;
+    ArrayList<Integer> userRates = new ArrayList<Integer>();
+    int like;
+
 
 
     public Movie(int id, String title, double rate, String trailer, String summry, String poster, String realeseDate, ArrayList<Report> reports, ArrayList<Review> reviews, String soundTrack, ArrayList<Cast> casts, String play, int numberOfReviews, String photos, MovieGenres movieGenres,
-                 String language) {
+                 String language,ArrayList<Integer> userRates,int like) {
         this.id = id;
         this.title = title;
         this.imdbRate = rate;
@@ -40,6 +43,8 @@ public class Movie {
         this.photos = photos;
         this.movieGenres = movieGenres;
         this.language = language;
+        this.userRates = userRates;
+        this.like = like;
     }
 
     @Override
