@@ -174,7 +174,7 @@ public class User {
             case 2:
                 System.out.println("Enter your command:");
                 System.out.println("0.signout\n1.show my profile and profile edit setting\n2.search a movie\n3.search a cast" +
-                        "\n4.search a user");
+                        "\n4.search a user\n5.search a movie with filters(advance search)");
                 return;
             case 3:
                 System.out.println("Enter your command:");
@@ -227,39 +227,57 @@ public class User {
     }
 
     public static void advanceSearch() {
-        System.out.println("catgories for advance search:" +
-                "1.search with filters" +
-                "2.");
-        System.out.println("which one: " +
-                "1.search with realsedate" +
-                "2.search with genre" +
-                "3.search with rating" +
-                "4.back");
-        int whichFilter = Integer.parseInt(main.scanner.nextLine());
-        if (whichFilter == 1) {
-            System.out.println("enter ur desired year: like mm/dd/yy ");
-            String newYear = main.scanner.nextLine();
-            for (Movie movie : main.moviesDb){
-                if (movie.realeseDate.equals(newYear)){
-                    System.out.println(movie.title);
+        System.out.println("""
+                catgories for advance search:
+                1.search with filters
+                2.search by keywords
+                3.search a user or movie with their name
+                4.back:""");
+        int whichOne = Integer.parseInt(main.scanner.nextLine());
+        if (whichOne == 1) {
+            System.out.println("which one: " +
+                    "1.search with realsedate" +
+                    " 2.search with genre" +
+                    " 3.search with rating" +
+                    " 4.back");
+            int whichFilter = Integer.parseInt(main.scanner.nextLine());
+            if (whichFilter == 1) {
+                System.out.println("enter ur desired year: like mm/dd/yy ");
+                String newYear = main.scanner.nextLine();
+                for (Movie movie : main.moviesDb) {
+                    if (movie.realeseDate.equals(newYear)) {
+                        System.out.println(movie.title);
+                    }
+                }
+            } else if (whichFilter == 2) {
+                System.out.println("enter genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
+                int newg = Integer.parseInt(main.scanner.nextLine());
+                MovieGenres newmoviegenre = User.newgenre(newg);
+                for (Movie movie : main.moviesDb) {
+                    if (movie.movieGenres.equals(newmoviegenre)) {
+                        System.out.println(movie.title);
+                    }
+                }
+            } else if (whichFilter == 3) {
+                System.out.println("enter ur desired rate:");
+                double newImdbRate = Double.parseDouble(main.scanner.nextLine());
+                for (Movie movie : main.moviesDb) {
+                    if (movie.imdbRate == newImdbRate) {
+                        System.out.println(movie.title);
+                    }
                 }
             }
-        } else if (whichFilter == 2) {
-            System.out.println("enter genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
-            int newg = Integer.parseInt(main.scanner.nextLine());
-            MovieGenres newmoviegenre = User.newgenre(newg);
-            for (Movie movie : main.moviesDb){
-                if (movie.movieGenres.equals(newmoviegenre)){
-                    System.out.println(movie.title);
-                }
-            }
-        } else if (whichFilter == 3) {
-            System.out.println("enter ur desired rate:");
-            double newImdbRate = Double.parseDouble(main.scanner.nextLine());
-            for (Movie movie : main.moviesDb){
-                if (movie.imdbRate == newImdbRate){
-                    System.out.println(movie.title);
-                }
+        } else if (whichOne == 2) {
+
+        } else if (whichOne == 3) {
+            System.out.println("1.movie or 2.user: ");
+            int whichtwo = Integer.parseInt(main.scanner.nextLine());
+            System.out.println("enter the desired name: ");
+            String input = main.scanner.nextLine();
+            if (whichtwo == 1) {
+                User.seeAMovie(input);
+            } else if (whichtwo == 2) {
+                User.seeAUser(input);
             }
         }
     }

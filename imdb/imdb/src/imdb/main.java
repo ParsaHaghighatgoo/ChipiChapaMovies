@@ -38,7 +38,7 @@ public class main {
         ArrayList<User> newfollowers = new ArrayList<>();
         ArrayList<User> newfollowings = new ArrayList<>();
 
-        User user = new User(userID, "user", "test", "userTest",
+        User user = new User(userID, "user", "test", "user1",
                 "444", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, null, newfollowings, UserRole.MEMBER,
                 null, null, null, newWatchList, null
                 , null, 1);
@@ -279,8 +279,7 @@ public class main {
                                             "\n5.write a review for this movie :D" +
                                             "\n6.Report this movie :(" +
                                             "\n7.Contribute trivia, goofs, quotes, soundtrack info for this movie" +
-                                            "\n8.search a movie with filters(advance search)" +
-                                            "\n9.back");
+                                            "\n8.back");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
                                         logedInUser.favorites.add(desiredMovie);
@@ -300,9 +299,7 @@ public class main {
                                     } else if (newCommand == 7) {
                                         System.out.println("Enter your contribution: ");
                                         String newContrbution = scanner.nextLine();
-                                        User.suggestToAdminAsMember(logedInUser , newContrbution);
-                                    } else if (newCommand == 8 ) {
-                                        User.advanceSearch();
+                                        User.suggestToAdminAsMember(logedInUser, newContrbution);
                                     }
 
 
@@ -347,7 +344,12 @@ public class main {
                                         logedInUser.following.add(desiredUser);
                                     }
                                 }
-                            } else if (command == 0) {
+
+                            }
+                            else if (command == 5) {
+                                User.advanceSearch();
+                            }
+                            else if (command == 0) {
                                 break;
                             }
 
