@@ -169,7 +169,7 @@ public class User {
                         "4.ban user\n5.edit user" +
                         "\n6.list of movies\n7.delete movie\n8.add movie\n9.edit movie\n10.search a user" +
                         "\n11.search a movie\n12.approve editor's edit\n13.see all casts\n14.delete casts" +
-                        "\n15.add cast\n16.edit cast\n17.show my profile and profile edit setting\n18.search a cast");
+                        "\n15.add cast\n16.edit cast\n17.show my profile and profile edit setting\n18.search a cast\n19.setImdbRate");
                 return;
             case 2:
                 System.out.println("Enter your command:");
@@ -402,7 +402,7 @@ public class User {
                                 newtitle, newabout, main.usersDb.get(0), nhelp, nspoil, 0, movie);
                         movie.reviews.add(newreview);
                         main.reviewsDb.add(newreview);
-                        main.usersDb.get(0).reviews.add(newreview);
+                        //main.usersDb.get(0).reviews.add(newreview);
                     }
                 } else if (command == 10) {
                     System.out.println("enter new soundtrack url:");

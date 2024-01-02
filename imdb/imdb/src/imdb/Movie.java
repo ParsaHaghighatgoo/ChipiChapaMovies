@@ -1,7 +1,6 @@
 package imdb;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Movie {
     int id;
@@ -24,9 +23,8 @@ public class Movie {
     int like;
 
 
-
     public Movie(int id, String title, double rate, String trailer, String summry, String poster, String realeseDate, ArrayList<Report> reports, ArrayList<Review> reviews, String soundTrack, ArrayList<Cast> casts, String play, int numberOfReviews, String photos, MovieGenres movieGenres,
-                 String language,ArrayList<Integer> userRates,int like) {
+                 String language, ArrayList<Integer> userRates, int like) {
         this.id = id;
         this.title = title;
         this.imdbRate = rate;
@@ -66,6 +64,15 @@ public class Movie {
                 ", photos='" + photos + '\'' +
                 ", movieGenres=" + movieGenres +
                 '}';
+    }
+
+    public static void setAndCalculateUserRatesForImdbRate(Movie desiredMovie) {
+        double avg = 0;
+        for (int userRate : desiredMovie.userRates) {
+            avg += userRate;
+        }
+        avg = avg / desiredMovie.userRates.size();
+        desiredMovie.imdbRate = avg;
     }
 }
 

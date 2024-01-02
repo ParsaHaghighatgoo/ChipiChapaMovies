@@ -3,6 +3,7 @@
 package imdb;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -246,6 +247,20 @@ public class main {
                             } else if (command == 18) {
                                 System.out.println("enter name of the cast you wanna see: ");
                                 User.seeACast(scanner.nextLine());
+                            } else if (command == 19) {
+                                System.out.println("enter name of desired movie: ");
+                                String desiredMovieName = scanner.nextLine();
+                                int flag = 0;
+                                for (Movie movie : moviesDb) {
+                                    if (movie.title.equals(desiredMovieName)) {
+                                        Movie.setAndCalculateUserRatesForImdbRate(movie);
+                                        flag = 1;
+                                        break;
+                                    }
+                                }
+                                if (flag == 0) {
+                                    System.out.println("can't find this movie :D");
+                                }
                             }
                         } else if (logedInUser.userRole.equals(UserRole.EDITOR)) {
                             command = Integer.parseInt(scanner.nextLine());
@@ -271,15 +286,17 @@ public class main {
                                     System.out.println("cant find this movie!");
                                 } else {
                                     System.out.println(desiredMovie);
-                                    System.out.println("you can add this movie to :" +
-                                            "\n1.your favorites" +
-                                            "\n2.your classicsToSee" +
-                                            "\n3.your watchlist" +
-                                            "\n4.you can rate this movie" +
-                                            "\n5.write a review for this movie :D" +
-                                            "\n6.Report this movie :(" +
-                                            "\n7.Contribute trivia, goofs, quotes, soundtrack info for this movie" +
-                                            "\n8.back");
+                                    System.out.println("""
+                                            you can add this movie to :
+                                            1.your favorites
+                                            2.your classicsToSee
+                                            3.your watchlist
+                                            4.you can rate this movie
+                                            5.write a review for this movie :D
+                                            6.Report this movie :(
+                                            7.Contribute trivia, goofs, quotes, soundtrack info for this movie
+                                            8.see all of reviews
+                                            9.back""");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
                                         logedInUser.favorites.add(desiredMovie);
@@ -300,6 +317,28 @@ public class main {
                                         System.out.println("Enter your contribution: ");
                                         String newContrbution = scanner.nextLine();
                                         User.suggestToAdminAsMember(logedInUser, newContrbution);
+                                    } else if (newCommand == 8) {
+                                        int cnt = 0;
+                                        for (Review review : desiredMovie.reviews) {
+                                            System.out.println(cnt + ". " + review.title + "\n" + review.about);
+                                            cnt ++;
+                                        }
+                                        System.out.println("you can like this one of these reviews enter the number of it if u want" +
+                                                " if you dont want enter 0004: ");
+                                        String newLikeCommand = scanner.nextLine();
+                                        if(!Objects.equals(newLikeCommand, "0004")){
+                                            int cntt = 0 ;
+                                            for(Review review: desiredMovie.reviews){
+                                                if(cntt == Integer.parseInt(newLikeCommand)){
+                                                    review.like++;
+                                                    System.out.println(review.like);
+                                                    break;
+                                                }
+                                                cntt++;
+                                            }
+                                        }
+
+
                                     }
 
 
@@ -345,11 +384,9 @@ public class main {
                                     }
                                 }
 
-                            }
-                            else if (command == 5) {
+                            } else if (command == 5) {
                                 User.advanceSearch();
-                            }
-                            else if (command == 0) {
+                            } else if (command == 0) {
                                 break;
                             }
 
