@@ -14,6 +14,7 @@ public class main {
     public static ArrayList<Movie> actionDb = new ArrayList<>();
     public static ArrayList<Movie> cartoonDb = new ArrayList<>();
     public static ArrayList<Movie> horrorDb = new ArrayList<>();
+    public static ArrayList<AprovalEdits> aprovalEditsDb = new ArrayList<>();
 
     //Global vars
     public static Random randomIdGen = new Random();
@@ -38,6 +39,7 @@ public class main {
         ArrayList<Movie> adminWatchlist = new ArrayList<>();
         ArrayList<Movie> adminFavorites = new ArrayList<>();
         ArrayList<Cast> admincasts = new ArrayList<>();
+        ArrayList<AprovalEdits> adminAproveEdits = new ArrayList<>();
 
         User admin = new User(adminId, "Parsa",
                 "Haghighatgoo", "admin", "admin", 228
@@ -45,7 +47,7 @@ public class main {
                 , UserRole.ADMIN, adminReport, adminReview, adminClassictosee, adminWatchlist, adminFavorites
                 , admincasts, 1);
         usersDb.add(admin);
-
+        admin.adminAproves = adminAproveEdits;
         int userID = randomIdGen.nextInt(bound);
         ArrayList<User> user1Followers = new ArrayList<>();
         ArrayList<User> user1Following = new ArrayList<>();
@@ -85,11 +87,13 @@ public class main {
         ArrayList<Movie> editorWatchlist = new ArrayList<>();
         ArrayList<Movie> editorFavorites = new ArrayList<>();
         ArrayList<Cast> editorcasts = new ArrayList<>();
+        ArrayList<AprovalEdits> editroAproveQueue = new ArrayList<>();
 
         User editor = new User(userID, "editor", "eidtor", "editor",
                 "editor", 1, "eidtor", 1, Sex.MALE, userAddress, editorFollowers, editorFollowing
                 , UserRole.EDITOR, editorReport, editorReview, editorClassictosee, editorWatchlist, editorFavorites
                 , editorcasts, 1);
+        editor.aprovesQueue = editroAproveQueue;
         usersDb.add(user);
         usersDb.add(user2);
         usersDb.add(editor);
@@ -125,7 +129,7 @@ public class main {
         ArrayList<String> movie2Comment = new ArrayList<>();
 
         Movie movie2Test = new Movie(randomIdGen.nextInt(bound), "movie2", 4.4, "", "", "", "2022", movie2Report
-                , movie2Review, "", movie2Casts, "", 0, "", MovieGenres.DRAMA, "Persian", movie2UserRates, 7, movie2Comment);
+                , movie2Review, "", movie2Casts, "", 0, "", MovieGenres.ACION, "Persian", movie2UserRates, 7, movie2Comment);
         moviesDb.add(movie2Test);
 
         ArrayList<Cast> movie3Casts = new ArrayList<>();
@@ -154,7 +158,7 @@ public class main {
         ryanMovie.add(movie4Test);
         movie4Casts.add(ryanGosling);
 
-
+        user.favorites.add(movie2Test);
         castMovie.add(movie3Test);
         castMovie.add(movieTest);
 
@@ -369,6 +373,8 @@ public class main {
                                 if (flag == 0) {
                                     System.out.println("can't find this movie :D");
                                 }
+                            } else if (command == 20) {
+                                AprovalEdits.adminMethod(logedInUser);
                             }
                             /////////////////////////////////////////////////////////////////////////////////////////////////////
                             //EDITOR
@@ -378,6 +384,17 @@ public class main {
                                 User.suggestToAdmin(logedInUser);
                             } else if (command == 2) {
                                 User.showMyProfile(logedInUser);
+                            } else if (command == 3) {
+                                AprovalEdits.editMovieWithAproval(logedInUser);
+                            } else if (command == 4) {
+                                System.out.println("which movie you wanna report : ");
+                                String title = scanner.nextLine();
+                                for (Movie movie : moviesDb) {
+                                    if (movie.title.equals(title)) {
+                                        Report.createReport(movie, logedInUser);
+                                        break;
+                                    }
+                                }
                             } else if (command == 0) {
                                 break;
                             }
@@ -517,6 +534,9 @@ public class main {
                             } else if (command == 6) {
                                 System.out.println("------------------------------------------------------");
                                 Movie.charts();
+                            } else if (command == 7) {
+                                System.out.println("------------------------------------------------------");
+                                User.getRecomsBasedOnYourTaste(logedInUser);
                             } else if (command == 0) {
                                 break;
                             }

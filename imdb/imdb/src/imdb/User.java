@@ -24,6 +24,8 @@ public class User {
     ArrayList<Cast> castsFollowing;
     int isActive;
     ArrayList<String> editorrecoms;
+    ArrayList<AprovalEdits> adminAproves;
+    ArrayList<AprovalEdits> aprovesQueue;
 
     public User(int id, String name, String lastName, String userName, String passWord, int nationalID, String email, int age, Sex sex, Address address, ArrayList<User> followers, ArrayList<User> following, UserRole userRole, ArrayList<Report> reports, ArrayList<Review> reviews, ArrayList<Movie> classicsToSee, ArrayList<Movie> watchList, ArrayList<Movie> favorites, ArrayList<Cast> castsFollowing, int isActive) {
         this.id = id;
@@ -46,7 +48,6 @@ public class User {
         this.favorites = favorites;
         this.castsFollowing = castsFollowing;
         this.isActive = isActive;
-
     }
 
     public static void resetpass() {
@@ -169,16 +170,16 @@ public class User {
                         "4.ban user\n5.edit user" +
                         "\n6.list of movies\n7.delete movie\n8.add movie\n9.edit movie\n10.search a user" +
                         "\n11.search a movie\n12.approve editor's edit\n13.see all casts\n14.delete casts" +
-                        "\n15.add cast\n16.edit cast\n17.show my profile and profile edit setting\n18.search a cast\n19.setImdbRate");
+                        "\n15.add cast\n16.edit cast\n17.show my profile and profile edit setting\n18.search a cast\n19.setImdbRate\n20.editor edit's queue");
                 return;
             case 2:
                 System.out.println("Enter your command:");
                 System.out.println("0.signout\n1.show my profile and profile edit setting\n2.search a movie\n3.search a cast" +
-                        "\n4.search a user\n5.advance search\n6.get recom based most rated");
+                        "\n4.search a user\n5.advance search\n6.get recom based most rated\n7.get recoms based on profile test");
                 return;
             case 3:
                 System.out.println("Enter your command:");
-                System.out.println("0.signout\n1.suggest an edit to admin\n2.show my profile and profile edit setting");
+                System.out.println("0.signout\n1.suggest an edit to admin\n2.show my profile and profile edit setting\n3.edit movie with aproval\n4.report a movie");
                 return;
             default:
                 return;
@@ -322,6 +323,53 @@ public class User {
             }
         }
     }
+
+    public static void getRecomsBasedOnYourTaste(User logedInUser) {
+        int cartoonCnt = 0;
+        int actionCnt = 0;
+        int horrorCnt = 0;
+        int dramaCnt = 0;
+        int comedyCnt = 0;
+        for (Movie movie:logedInUser.favorites){
+            if (movie.movieGenres.equals(MovieGenres.COMEDY)){
+                comedyCnt++;
+            }
+            else if (movie.movieGenres.equals(MovieGenres.HORROR)){
+                horrorCnt++;
+            }
+            else if (movie.movieGenres.equals(MovieGenres.ACION)){
+                actionCnt++;
+            }
+            else if (movie.movieGenres.equals(MovieGenres.DRAMA)){
+                dramaCnt++;
+            }
+            else if (movie.movieGenres.equals(MovieGenres.CARTOON)){
+                cartoonCnt++;
+            }
+        }
+        System.out.println(actionCnt);
+        MovieGenres biggest = MovieGenres.COMEDY;
+        if (horrorCnt > comedyCnt){
+            biggest = MovieGenres.HORROR;
+        }
+        if(actionCnt > horrorCnt){
+            biggest = MovieGenres.ACION;
+        }
+        if (dramaCnt > actionCnt){
+            biggest = MovieGenres.DRAMA;
+        }
+        if (cartoonCnt > dramaCnt){
+            biggest = MovieGenres.CARTOON;
+        }
+        for(Movie movie: main.moviesDb){
+            if (movie.movieGenres.equals(biggest)){
+                System.out.println("the recommendation based on your favorites is : ");
+                User.printAMovie(movie);
+                break;
+            }
+        }
+    }
+
 
     public int getIsActive() {
         return isActive;
