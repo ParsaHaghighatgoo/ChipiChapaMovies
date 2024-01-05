@@ -1,12 +1,9 @@
-//tozih db va main
-
 package imdb;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
-
 
 public class main {
     public static ArrayList<User> usersDb = new ArrayList<>();
@@ -16,56 +13,116 @@ public class main {
     public static ArrayList<Cast> castDb = new ArrayList<>();
     public static Random randomIdGen = new Random();
     public static Scanner scanner = new Scanner(System.in);
+    public static ArrayList<Movie> comedyDb = new ArrayList<>();
+    public static ArrayList<Movie> dramaDb = new ArrayList<>();
+    public static ArrayList<Movie> actionDb = new ArrayList<>();
+    public static ArrayList<Movie> cartoonDb = new ArrayList<>();
+    public static ArrayList<Movie> horrorDb = new ArrayList<>();
+
+
     public static int bound = 1000000;
 
     public static User logedInUser;
 
     public static void main(String[] args) {
 
-
         Address userAddress = new Address("iran", "fars", "shiraz", "avini", 1);
 
         int adminId = randomIdGen.nextInt(bound);
+        ArrayList<User> adminFollowers = new ArrayList<>();
+        ArrayList<User> adminFollowing = new ArrayList<>();
+        ArrayList<Report> adminReport = new ArrayList<>();
+        ArrayList<Review> adminReview = new ArrayList<>();
+        ArrayList<Movie> adminClassictosee = new ArrayList<>();
+        ArrayList<Movie> adminWatchlist = new ArrayList<>();
+        ArrayList<Movie> adminFavorites = new ArrayList<>();
+        ArrayList<Cast> admincasts = new ArrayList<>();
+
         User admin = new User(adminId, "Parsa",
                 "Haghighatgoo", "admin", "admin", 228
-                , "prsahahgighatgoo@gmail.com", 20, Sex.MALE, userAddress, null, null
-                , UserRole.ADMIN, null, null, null, null, null
-                , null, 1);
+                , "prsahahgighatgoo@gmail.com", 20, Sex.MALE, userAddress, adminFollowers, adminFollowing
+                , UserRole.ADMIN, adminReport, adminReview, adminClassictosee, adminWatchlist, adminFavorites
+                , admincasts, 1);
         usersDb.add(admin);
 
-
         int userID = randomIdGen.nextInt(bound);
-        ArrayList<Movie> newWatchList = new ArrayList<>();
-        ArrayList<User> newfollowers = new ArrayList<>();
-        ArrayList<User> newfollowings = new ArrayList<>();
+        ArrayList<User> user1Followers = new ArrayList<>();
+        ArrayList<User> user1Following = new ArrayList<>();
+        ArrayList<Report> user1Report = new ArrayList<>();
+        ArrayList<Review> user1Review = new ArrayList<>();
+        ArrayList<Movie> user1Classictosee = new ArrayList<>();
+        ArrayList<Movie> user1Watchlist = new ArrayList<>();
+        ArrayList<Movie> user1Favorites = new ArrayList<>();
+        ArrayList<Cast> user1casts = new ArrayList<>();
 
         User user = new User(userID, "user", "test", "user1",
-                "444", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, null, newfollowings, UserRole.MEMBER,
-                null, null, null, newWatchList, null
-                , null, 1);
-        User user2 = new User(userID + 2, "user2", "test", "userTest2",
-                "445", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, newfollowers, null, UserRole.MEMBER,
-                null, null, null, null, null
-                , null, 1);
+                "444", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, user1Followers, user1Following, UserRole.MEMBER,
+                user1Report, user1Review, user1Classictosee, user1Watchlist, user1Favorites
+                , user1casts, 1);
+
+        int userID2 = randomIdGen.nextInt(bound);
+        ArrayList<User> user2Followers = new ArrayList<>();
+        ArrayList<User> user2Following = new ArrayList<>();
+        ArrayList<Report> user2Report = new ArrayList<>();
+        ArrayList<Review> user2Review = new ArrayList<>();
+        ArrayList<Movie> user2Classictosee = new ArrayList<>();
+        ArrayList<Movie> user2Watchlist = new ArrayList<>();
+        ArrayList<Movie> user2Favorites = new ArrayList<>();
+        ArrayList<Cast> user2casts = new ArrayList<>();
+        User user2 = new User(userID2 + 2, "user2", "test", "user2",
+                "445", 228366, "userTest@gmail.com", 18, Sex.OTHER, userAddress, user2Followers, user2Following, UserRole.MEMBER,
+                user2Report, user2Review, user2Classictosee, user2Watchlist, user2Favorites
+                , user2casts, 1);
+
+
+        int editorID = randomIdGen.nextInt(bound);
+        ArrayList<User> editorFollowers = new ArrayList<>();
+        ArrayList<User> editorFollowing = new ArrayList<>();
+        ArrayList<Report> editorReport = new ArrayList<>();
+        ArrayList<Review> editorReview = new ArrayList<>();
+        ArrayList<Movie> editorClassictosee = new ArrayList<>();
+        ArrayList<Movie> editorWatchlist = new ArrayList<>();
+        ArrayList<Movie> editorFavorites = new ArrayList<>();
+        ArrayList<Cast> editorcasts = new ArrayList<>();
+
         User editor = new User(userID, "editor", "eidtor", "editor",
-                "editor", 1, "eidtor", 1, Sex.MALE, userAddress, null, null
-                , UserRole.EDITOR, null, null, null, null, null
-                , null, 1);
+                "editor", 1, "eidtor", 1, Sex.MALE, userAddress, editorFollowers, editorFollowing
+                , UserRole.EDITOR, editorReport, editorReview, editorClassictosee, editorWatchlist, editorFavorites
+                , editorcasts, 1);
         usersDb.add(user);
         usersDb.add(user2);
+        usersDb.add(editor);
+
 
         String[] rolelist = {"admin", "member", "editor", "cast"};
 
-        ArrayList<Movie> castTestMovie = new ArrayList<>();
-        Cast castTest = new Cast(userID, "cast", "cast", 1, Sex.MALE, castTestMovie, CastRole.DIRECTOR, null);
+        ArrayList<Movie> castMovie = new ArrayList<>();
+        ArrayList<User> castFollowers = new ArrayList<>();
+        Cast castTest = new Cast(userID, "cast", "cast", 1, Sex.MALE, castMovie, CastRole.DIRECTOR, castFollowers);
         castDb.add(castTest);
 
         ArrayList<Cast> movieTestCasts = new ArrayList<>();
         movieTestCasts.add(castTest);
         ArrayList<Integer> TestuserRates = new ArrayList<>();
+        ArrayList<Review> testReview = new ArrayList<>();
         Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", randomIdGen.nextInt(100), "", "", "", "2,2,2", null
-                , null, "", null, "", 0, "", MovieGenres.ACION, "english", TestuserRates, 0);
+                , testReview, "", null, "", 0, "", MovieGenres.ACION, "english", TestuserRates, 0);
         moviesDb.add(movieTest);
+
+
+        for (Movie movie : moviesDb) {
+            if (movie.movieGenres.equals(MovieGenres.COMEDY)) {
+                comedyDb.add(movie);
+            } else if (movie.movieGenres.equals(MovieGenres.DRAMA)) {
+                dramaDb.add(movie);
+            } else if (movie.movieGenres.equals(MovieGenres.ACION)) {
+                actionDb.add(movie);
+            } else if (movie.movieGenres.equals(MovieGenres.CARTOON)) {
+                cartoonDb.add(movie);
+            } else if (movie.movieGenres.equals(MovieGenres.HORROR)) {
+                horrorDb.add(movie);
+            }
+        }
 
         while (true) {
             System.out.println("-------------------------------------------------------------");
@@ -78,8 +135,6 @@ public class main {
                 break;
             } else if (command == 2) {
                 System.out.println("-------------------------------------------------------------");
-//                System.out.println("login as:\n1.admin\n2.member\n3.editor\n4.cast");
-//                int role = Integer.parseInt(scanner.nextLine());
                 System.out.println("enter your username:");
                 String inpUser = scanner.nextLine();
                 System.out.println("enter your password:");
@@ -227,7 +282,7 @@ public class main {
                                 String whichMovie = scanner.nextLine();
                                 User.seeAMovie(whichMovie);
                             } else if (command == 12) {
-
+                                //approve admin edits
                             } else if (command == 13) {
                                 User.seeAllCasts();
                             } else if (command == 14) {
@@ -262,6 +317,8 @@ public class main {
                                     System.out.println("can't find this movie :D");
                                 }
                             }
+                            /////////////////////////////////////////////////////////////////////////////////////////////////////
+                            //EDITOR
                         } else if (logedInUser.userRole.equals(UserRole.EDITOR)) {
                             command = Integer.parseInt(scanner.nextLine());
                             if (command == 1) {
@@ -296,7 +353,8 @@ public class main {
                                             6.Report this movie :(
                                             7.Contribute trivia, goofs, quotes, soundtrack info for this movie
                                             8.see all of reviews
-                                            9.back""");
+                                            9.like this movie
+                                            10.back""");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
                                         logedInUser.favorites.add(desiredMovie);
@@ -319,28 +377,35 @@ public class main {
                                         User.suggestToAdminAsMember(logedInUser, newContrbution);
                                     } else if (newCommand == 8) {
                                         int cnt = 0;
-                                        for (Review review : desiredMovie.reviews) {
-                                            System.out.println(cnt + ". " + review.title + "\n" + review.about);
-                                            cnt ++;
-                                        }
-                                        System.out.println("you can like this one of these reviews enter the number of it if u want" +
-                                                " if you dont want enter 0004: ");
-                                        String newLikeCommand = scanner.nextLine();
-                                        if(!Objects.equals(newLikeCommand, "0004")){
-                                            int cntt = 0 ;
-                                            for(Review review: desiredMovie.reviews){
-                                                if(cntt == Integer.parseInt(newLikeCommand)){
-                                                    review.like++;
-                                                    System.out.println(review.like);
-                                                    break;
-                                                }
-                                                cntt++;
+                                        if (desiredMovie.reviews.isEmpty()) {
+                                            System.out.println("size of reviews is 0");
+                                        } else {
+                                            for (Review review : desiredMovie.reviews) {
+                                                System.out.println(cnt + ". " + review.title + "\n" + review.about);
+                                                cnt++;
                                             }
+                                            System.out.println("you can like this one of these reviews enter the number of it if u want" +
+                                                    " if you dont want enter \"back\" : ");
+                                            String newLikeCommand = scanner.nextLine();
+                                            if (!Objects.equals(newLikeCommand, "back")) {
+                                                int cntt = 0;
+                                                for (Review review : desiredMovie.reviews) {
+                                                    if (cntt == Integer.parseInt(newLikeCommand)) {
+                                                        review.like++;
+                                                        System.out.println(review.like);
+                                                        break;
+                                                    }
+                                                    cntt++;
+                                                }
+                                            }
+
                                         }
 
 
+                                    } else if (newCommand == 9) {
+                                        desiredMovie.like++;
+                                        System.out.println("movie's like : " + desiredMovie.like);
                                     }
-
 
                                 }
                             } else if (command == 3) {

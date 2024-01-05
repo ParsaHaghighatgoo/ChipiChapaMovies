@@ -1,5 +1,6 @@
 package imdb;
 
+
 public class Review {
     int id;
     String title;
@@ -10,7 +11,7 @@ public class Review {
     int like;
     Movie movie;
 
-    public Review(int id, String title, String about, User user, boolean ishelpful, boolean isspoiler,int like,Movie movie) {
+    public Review(int id, String title, String about, User user, boolean ishelpful, boolean isspoiler, int like, Movie movie) {
         this.id = id;
         this.title = title;
         this.about = about;
@@ -22,7 +23,7 @@ public class Review {
     }
 
 
-    public static Review createAReview(Movie movie , User logedInUser) {
+    public static Review createAReview(Movie movie, User logedInUser) {
         boolean nspoil;
         boolean nhelp;
         System.out.println("enter new title for it:");
@@ -44,7 +45,7 @@ public class Review {
             nspoil = false;
         }
         Review newreview = new Review(main.randomIdGen.nextInt(main.bound),
-                newtitle, newabout, logedInUser, nhelp, nspoil, 0,movie);
+                newtitle, newabout, logedInUser, nhelp, nspoil, 0, movie);
         movie.reviews.add(newreview);
         main.reviewsDb.add(newreview);
         logedInUser.reviews.add(newreview);

@@ -12,19 +12,19 @@ public class Cast {
     CastRole role;
     ArrayList<User> userFollowers;
 
-    @Override
-    public String toString() {
-        return "Cast{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", movies=" + movies +
-                ", role=" + role +
-                ", userFollowers=" + userFollowers +
-                '}';
-    }
+//    @Override
+////    public String toString() {
+//        return "Cast{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", age=" + age +
+//                ", sex=" + sex +
+//                ", movies=" + movies +
+//                ", role=" + role +
+//                ", userFollowers=" + userFollowers +
+//                '}';
+//    }
 
     public int getId() {
         return id;

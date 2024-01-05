@@ -45,26 +45,26 @@ public class Movie {
         this.like = like;
     }
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", rate=" + imdbRate +
-                ", trailer='" + trailer + '\'' +
-                ", summry='" + summry + '\'' +
-                ", poster='" + poster + '\'' +
-                ", realeseDate='" + realeseDate + '\'' +
-                ", reports=" + reports +
-                ", reviews=" + reviews +
-                ", soundTrack='" + soundTrack + '\'' +
-                ", casts=" + casts +
-                ", play='" + play + '\'' +
-                ", numberOfReviews=" + numberOfReviews +
-                ", photos='" + photos + '\'' +
-                ", movieGenres=" + movieGenres +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Movie{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", rate=" + imdbRate +
+//                ", trailer='" + trailer + '\'' +
+//                ", summry='" + summry + '\'' +
+//                ", poster='" + poster + '\'' +
+//                ", realeseDate='" + realeseDate + '\'' +
+//                ", reports=" + reports +
+//                ", reviews=" + reviews +
+//                ", soundTrack='" + soundTrack + '\'' +
+//                ", casts=" + casts +
+//                ", play='" + play + '\'' +
+//                ", numberOfReviews=" + numberOfReviews +
+//                ", photos='" + photos + '\'' +
+//                ", movieGenres=" + movieGenres +
+//                '}';
+//    }
 
     public static void setAndCalculateUserRatesForImdbRate(Movie desiredMovie) {
         double avg = 0;

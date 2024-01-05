@@ -7,16 +7,16 @@ public class Address {
     String street;
     int plaque;
 
-    @Override
-    public String toString() {
-        return "Address{" +
-                "country='"+countyName+'\''+
-                "provienceName='" + provienceName + '\'' +
-                ", cityName='" + cityName + '\'' +
-                ", street='" + street + '\'' +
-                ", plaque=" + plaque +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Address{" +
+//                "country='"+countyName+'\''+
+//                "provienceName='" + provienceName + '\'' +
+//                ", cityName='" + cityName + '\'' +
+//                ", street='" + street + '\'' +
+//                ", plaque=" + plaque +
+//                '}';
+//    }
 
     public String getProvienceName() {
         return provienceName;

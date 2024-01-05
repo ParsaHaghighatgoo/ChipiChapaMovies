@@ -728,7 +728,7 @@ public class User {
 
     public static MovieGenres newgenre(int newg) {
         if (newg == 1) return MovieGenres.COMEDY;
-        else if (newg == 2) return MovieGenres.DARMA;
+        else if (newg == 2) return MovieGenres.DRAMA;
         else if (newg == 3) return MovieGenres.ACION;
         else if (newg == 4) return MovieGenres.CARTOON;
         else if (newg == 5) return MovieGenres.HORROR;

@@ -1,8 +1,9 @@
 package imdb;
 
+
 public enum MovieGenres {
     COMEDY,
-    DARMA,
+    DRAMA,
     ACION,
     CARTOON ,
     HORROR

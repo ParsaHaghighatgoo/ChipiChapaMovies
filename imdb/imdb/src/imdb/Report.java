@@ -1,5 +1,6 @@
 package imdb;
 
+
 public class Report {
     int id;
     User user;
