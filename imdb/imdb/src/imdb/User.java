@@ -71,7 +71,7 @@ public class User {
     }
 
     public static void showMyProfile(User logedInUser) {
-        System.out.println(logedInUser);
+        printAProfile(logedInUser);
         System.out.println("if you want change ur profile enter: 1.changeProfile's detail 0.back");
         int command = Integer.parseInt(main.scanner.nextLine());
         if (command == 0) {
@@ -174,7 +174,7 @@ public class User {
             case 2:
                 System.out.println("Enter your command:");
                 System.out.println("0.signout\n1.show my profile and profile edit setting\n2.search a movie\n3.search a cast" +
-                        "\n4.search a user\n5.advance search");
+                        "\n4.search a user\n5.advance search\n6.get recom based most rated");
                 return;
             case 3:
                 System.out.println("Enter your command:");
@@ -283,28 +283,28 @@ public class User {
                     }
                 }
             } else if (whichKeyWord == 2) {
-                for (Movie movie : main.moviesDb){
-                    if (movie.language.equals("English") || movie.language.equals("Persian")){
+                for (Movie movie : main.moviesDb) {
+                    if (movie.language.equals("English") || movie.language.equals("Persian")) {
                         System.out.println(movie.title + " , " + movie.language);
                     }
                 }
             } else if (whichKeyWord == 3) {
                 System.out.println("movie with most rate : " + main.moviesDb.get(0).title + " , " + main.moviesDb.get(0).imdbRate);
             } else if (whichKeyWord == 4) {
-                for(Cast cast: main.castDb){
-                    if (cast.name.equals("Ryan") && cast.lastName.equals("Gosling")){
+                for (Cast cast : main.castDb) {
+                    if (cast.name.equals("Ryan") && cast.lastName.equals("Gosling")) {
                         System.out.println("Ryan Gosling movies : ");
-                        for (Movie movie:cast.movies){
+                        for (Movie movie : cast.movies) {
                             System.out.println(movie.title);
                         }
                         break;
                     }
                 }
             } else if (whichKeyWord == 5) {
-                for (Cast cast : main.castDb){
-                    if (cast.role.equals(CastRole.DIRECTOR)){
+                for (Cast cast : main.castDb) {
+                    if (cast.role.equals(CastRole.DIRECTOR)) {
                         System.out.println(cast.name + " " + cast.lastName + " movies : ");
-                        for (Movie movie: cast.movies){
+                        for (Movie movie : cast.movies) {
                             System.out.println(movie.title);
                         }
                     }
@@ -336,7 +336,7 @@ public class User {
             if (movie.title.equals(title)) {
                 System.out.println(
                         "edit :\n1.id\n2.title\n3.rate\n4.trailer\n5.summry\n6.poster\n7.realeseDate\n8.reports\n9.reviews\n10.soundTrack" +
-                                "\n11.casts\n12.play\n13.numberOfReviews\n14.photos\n15.movieGenres"
+                                "\n11.casts\n12.play\n13.numberOfReviews\n14.photos\n15.movieGenres\n16.comments"
                 );
                 int command = Integer.parseInt(main.scanner.nextLine());
                 if (command == 1) {
@@ -443,7 +443,7 @@ public class User {
                                 newtitle, newabout, main.usersDb.get(0), nhelp, nspoil, 0, movie);
                         movie.reviews.add(newreview);
                         main.reviewsDb.add(newreview);
-                        //main.usersDb.get(0).reviews.add(newreview);
+                        main.usersDb.get(0).reviews.add(newreview);
                     }
                 } else if (command == 10) {
                     System.out.println("enter new soundtrack url:");
@@ -483,7 +483,7 @@ public class User {
                         Cast newcast = new Cast(main.randomIdGen.nextInt(main.bound), newname, newlastname, newage, User.newUserSex(newsex), movies
                                 , Cast.castRolecreate(), follewrs);
                         main.castDb.add(newcast);
-                        movie.casts.add(newcast);
+                        movie.casts.add(newcast);}
                     } else if (command == 12) {
                         System.out.println("enter new play link:");
                         String editplay = main.scanner.nextLine();
@@ -500,20 +500,53 @@ public class User {
                         System.out.println("enter new movie genre:\n1.comedy 2.drama 3.action 4.cartoon 5.horror");
                         int newg = Integer.parseInt(main.scanner.nextLine());
                         movie.movieGenres = User.newgenre(newg);
+                    } else if (command == 16) {
+                        System.out.println("there is list of this movie comments:\nif you want to" +
+                                "delete one of them or add one report enter your command:" +
+                                "\n1.remove one\n2.add one");
+                        int cntcmt = 0;
+                        for (String comment : movie.comment) {
+                            System.out.println(cntcmt + "." + comment);
+                            cntcmt++;
+                        }
+                        int newcommandcmt = Integer.parseInt(main.scanner.nextLine());
+                        if (newcommandcmt == 1) {
+                            System.out.println("enter the number of comment you want to delete:");
+                            int commentDel = Integer.parseInt(main.scanner.nextLine());
+                            int cntDel = 0;
+                            for (String comment : movie.comment) {
+                                if (commentDel == cntDel) {
+                                    movie.comment.remove(comment);
+                                    break;
+                                }
+                                cntDel++;
+                            }
+                        } else if (newcommandcmt == 2) {
+                            System.out.println("enter new comment: ");
+                            String newCommentFromAdmin = main.scanner.nextLine();
+                            movie.comment.add(newCommentFromAdmin);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
-    }
+
 
     public static void seeAUser(String userName) {
         for (User user : main.usersDb) {
             if (user.userName.equals(userName)) {
-                System.out.println(user.following.get(0));
+                printAProfile(user);
                 break;
             }
         }
+    }
+
+
+    public static void printAProfile(User logedInUser) {
+        System.out.println(logedInUser.userName + "\n" + logedInUser.name + "\n" + logedInUser.userRole + "\n" + logedInUser.lastName + "\n" + logedInUser.passWord
+                + "\n" + logedInUser.reviews + "\n" + logedInUser.email + "\n" + logedInUser.following + "\n" + logedInUser.followers
+                + "\n" + logedInUser.reports + "\n" + logedInUser.address + "\n" + logedInUser.castsFollowing + "\n" + logedInUser.favorites + "\n" + logedInUser.watchList + "\n" + logedInUser.classicsToSee + "\n" + logedInUser.age + "\n" + logedInUser.sex + "\n" + logedInUser.nationalID);
     }
 
     public static User seeAUserForMember(String userName) {
@@ -529,10 +562,15 @@ public class User {
     public static void seeACast(String userName) {
         for (Cast cast : main.castDb) {
             if (cast.name.equals(userName)) {
-                System.out.println(cast);
+                printACast(cast);
                 break;
             }
         }
+    }
+
+    public static void printACast(Cast cast) {
+        System.out.println(cast.name + "\n" + cast.lastName + "\n" + cast.role + "\n" + cast.movies + "\n" + cast.userFollowers + "\n" + cast.age + "\n" +
+                cast.sex);
     }
 
     public static Cast seeACastForUser(String userName) {
@@ -548,10 +586,16 @@ public class User {
     public static void seeAMovie(String title) {
         for (Movie movie : main.moviesDb) {
             if (movie.title.equals(title)) {
-                System.out.println(movie);
+                printAMovie(movie);
                 break;
             }
         }
+    }
+
+    public static void printAMovie(Movie movie) {
+        System.out.println(movie.title + "\n" + movie.like + "\n" + movie.poster + "\n" + movie.trailer + "\n" + movie.summry + "\n" + movie.language
+                + "\n" + movie.imdbRate + "\n" + movie.movieGenres + "\n" + movie.reviews + "\n" + movie.reports + "\n" + movie.userRates
+                + "\n" + movie.numberOfReviews + "\n" + movie.casts + "\n" + movie.photos + "\n" + movie.play + "\n" + movie.soundTrack + "\n" + movie.realeseYear);
     }
 
     public static Movie seeAMovieForUser(String title) {
@@ -790,9 +834,9 @@ public class User {
                                 String play,
                                 int numberOfReviews,
                                 String photos,
-                                MovieGenres movieGenres, String language, ArrayList<Integer> userRates) {
+                                MovieGenres movieGenres, String language, ArrayList<Integer> userRates, ArrayList<String> comment) {
         Movie newMovie = new Movie(id, title, rate, trailer, summry, poster, realeseDate, reports
-                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres, language, userRates, 0);
+                , reviews, soundTrack, casts, play, numberOfReviews, photos, movieGenres, language, userRates, 0, comment);
         main.moviesDb.add(newMovie);
         for (Cast castmoive : newMovie.casts) {
             for (Cast castdb : main.castDb) {
@@ -806,6 +850,8 @@ public class User {
 
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //getter and setter
     public int getId() {
         return id;
     }
@@ -958,14 +1004,6 @@ public class User {
         this.castsFollowing = castsFollowing;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                ", followers=" + followers +
-                ", following=" + following +
-
-                '}';
-    }
 
 }
 

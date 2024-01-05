@@ -23,8 +23,9 @@ public class Movie {
     String language;
     ArrayList<Integer> userRates = new ArrayList<Integer>();
     int like;
+    ArrayList<String> comment;
 
-    public Movie(int id, String title, double rate, String trailer, String summry, String poster, String realeseYear, ArrayList<Report> reports, ArrayList<Review> reviews, String soundTrack, ArrayList<Cast> casts, String play, int numberOfReviews, String photos, MovieGenres movieGenres, String language, ArrayList<Integer> userRates, int like) {
+    public Movie(int id, String title, double rate, String trailer, String summry, String poster, String realeseYear, ArrayList<Report> reports, ArrayList<Review> reviews, String soundTrack, ArrayList<Cast> casts, String play, int numberOfReviews, String photos, MovieGenres movieGenres, String language, ArrayList<Integer> userRates, int like,ArrayList<String> comment) {
         this.id = id;
         this.title = title;
         this.imdbRate = rate;
@@ -43,6 +44,7 @@ public class Movie {
         this.language = language;
         this.userRates = userRates;
         this.like = like;
+        this.comment = comment;
     }
 
     public int getLike() {

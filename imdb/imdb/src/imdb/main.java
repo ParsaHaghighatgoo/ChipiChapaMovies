@@ -111,9 +111,9 @@ public class main {
         ArrayList<Integer> movieUserRates = new ArrayList<>();
         ArrayList<Review> movieReview = new ArrayList<>();
         ArrayList<Report> movieReport = new ArrayList<>();
-
+        ArrayList<String> movieComment = new ArrayList<>();
         Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", 8, "", "", "", "2023", movieReport
-                , movieReview, "", movieCasts, "", 0, "", MovieGenres.ACION, "English", movieUserRates, 4);
+                , movieReview, "", movieCasts, "", 0, "", MovieGenres.ACION, "English", movieUserRates, 4, movieComment);
         moviesDb.add(movieTest);
 
 
@@ -122,9 +122,10 @@ public class main {
         ArrayList<Integer> movie2UserRates = new ArrayList<>();
         ArrayList<Review> movie2Review = new ArrayList<>();
         ArrayList<Report> movie2Report = new ArrayList<>();
+        ArrayList<String> movie2Comment = new ArrayList<>();
 
         Movie movie2Test = new Movie(randomIdGen.nextInt(bound), "movie2", 4.4, "", "", "", "2022", movie2Report
-                , movie2Review, "", movie2Casts, "", 0, "", MovieGenres.ACION, "Persian", movie2UserRates, 7);
+                , movie2Review, "", movie2Casts, "", 0, "", MovieGenres.DRAMA, "Persian", movie2UserRates, 7, movie2Comment);
         moviesDb.add(movie2Test);
 
         ArrayList<Cast> movie3Casts = new ArrayList<>();
@@ -132,9 +133,10 @@ public class main {
         ArrayList<Integer> movie3UserRates = new ArrayList<>();
         ArrayList<Review> movie3Review = new ArrayList<>();
         ArrayList<Report> movie3Report = new ArrayList<>();
+        ArrayList<String> movie3Comment = new ArrayList<>();
 
         Movie movie3Test = new Movie(randomIdGen.nextInt(bound), "movie3", 9, "", "", "", "2023", movie3Report
-                , movie3Review, "", movie3Casts, "", 0, "", MovieGenres.ACION, "Italy", movie3UserRates, 1);
+                , movie3Review, "", movie3Casts, "", 0, "", MovieGenres.CARTOON, "Italy", movie3UserRates, 1, movie3Comment);
         moviesDb.add(movie3Test);
         ryanMovie.add(movie3Test);
         movie3Casts.add(ryanGosling);
@@ -144,8 +146,10 @@ public class main {
         ArrayList<Integer> movie4UserRates = new ArrayList<>();
         ArrayList<Review> movie4Review = new ArrayList<>();
         ArrayList<Report> movie4Report = new ArrayList<>();
+        ArrayList<String> movie4Comment = new ArrayList<>();
+
         Movie movie4Test = new Movie(randomIdGen.nextInt(bound), "movie4", 0.98, "", "", "", "2021", movie4Report
-                , movie4Review, "", movie4Casts, "", 0, "", MovieGenres.HORROR , "German", movie4UserRates, 33 );
+                , movie4Review, "", movie4Casts, "", 0, "", MovieGenres.HORROR, "German", movie4UserRates, 33, movie4Comment);
         moviesDb.add(movie4Test);
         ryanMovie.add(movie4Test);
         movie4Casts.add(ryanGosling);
@@ -308,10 +312,11 @@ public class main {
                                 System.out.println("enter the movie language: ");
                                 String newLanguage = scanner.nextLine();
                                 ArrayList<Integer> newUserRates = new ArrayList<>();
+                                ArrayList<String> newMovieComment = new ArrayList<>();
 
                                 User.addmovie(randomIdGen.nextInt(bound), newtitle, newrate, newtrailer, newsummry, newposter, newrealesedare
                                         , newreports, newreviews, newsoundtrack, newcasts, newplay, newnumofr, newphotos, newmoviegenre, newLanguage,
-                                        newUserRates);
+                                        newUserRates, newMovieComment);
                                 System.out.println("movie added successfuly!");
                                 System.out.println("-------------------------------------------------------------");
                             } else if (command == 9) {
@@ -390,7 +395,7 @@ public class main {
                                 if (desiredMovie == null) {
                                     System.out.println("cant find this movie!");
                                 } else {
-                                    System.out.println(desiredMovie);
+                                    User.printAMovie(desiredMovie);
                                     System.out.println("""
                                             you can add this movie to :
                                             1.your favorites
@@ -402,7 +407,9 @@ public class main {
                                             7.Contribute trivia, goofs, quotes, soundtrack info for this movie
                                             8.see all of reviews
                                             9.like this movie
-                                            10.back""");
+                                            10.show comments
+                                            11.write a comment
+                                            12.back""");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
                                         logedInUser.favorites.add(desiredMovie);
@@ -453,6 +460,14 @@ public class main {
                                     } else if (newCommand == 9) {
                                         desiredMovie.like++;
                                         System.out.println("movie's like : " + desiredMovie.like);
+                                    } else if (newCommand == 10) {
+                                        for (String comment : desiredMovie.comment) {
+                                            System.out.println(comment);
+                                        }
+                                    } else if (newCommand == 11) {
+                                        System.out.println("enter your comment: ");
+                                        String newCommentFromUser = scanner.nextLine();
+                                        desiredMovie.comment.add(newCommentFromUser);
                                     }
 
                                 }
@@ -463,7 +478,7 @@ public class main {
                                 if (desiredCast == null) {
                                     System.out.println("can't find this cast!");
                                 } else {
-                                    System.out.println(desiredCast);
+                                    User.printACast(desiredCast);
                                     System.out.println("you can : 1.follow this cast 2.back");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
                                     if (newCommand == 1) {
@@ -485,8 +500,8 @@ public class main {
                                         printSizeDesiredFollowingSize = 0;
                                     } else {
                                         printSizeDesiredFollowingSize = desiredUser.following.size();
-
                                     }
+                                    User.printAProfile(desiredUser);
                                     System.out.println(printSizeDesiredFollowingSize);
                                     System.out.println("you can : 1.follow this user 2.back");
                                     int newCommand = Integer.parseInt(scanner.nextLine());
@@ -499,6 +514,9 @@ public class main {
 
                             } else if (command == 5) {
                                 User.advanceSearch();
+                            } else if (command == 6) {
+                                System.out.println("------------------------------------------------------");
+                                Movie.charts();
                             } else if (command == 0) {
                                 break;
                             }
