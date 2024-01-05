@@ -174,7 +174,7 @@ public class User {
             case 2:
                 System.out.println("Enter your command:");
                 System.out.println("0.signout\n1.show my profile and profile edit setting\n2.search a movie\n3.search a cast" +
-                        "\n4.search a user\n5.search a movie with filters(advance search)");
+                        "\n4.search a user\n5.advance search");
                 return;
             case 3:
                 System.out.println("Enter your command:");
@@ -245,7 +245,7 @@ public class User {
                 System.out.println("enter ur desired year: like mm/dd/yy ");
                 String newYear = main.scanner.nextLine();
                 for (Movie movie : main.moviesDb) {
-                    if (movie.realeseDate.equals(newYear)) {
+                    if (movie.realeseYear.equals(newYear)) {
                         System.out.println(movie.title);
                     }
                 }
@@ -268,7 +268,48 @@ public class User {
                 }
             }
         } else if (whichOne == 2) {
-
+            System.out.println("""
+                    1.2023's movies
+                    2.persian and english movies
+                    3.most rate
+                    4.ryan gosling's movies
+                    5.Directors movie
+                    """);
+            int whichKeyWord = Integer.parseInt(main.scanner.nextLine());
+            if (whichKeyWord == 1) {
+                for (Movie movie : main.moviesDb) {
+                    if (movie.realeseYear.equals("2023")) {
+                        System.out.println(movie.title);
+                    }
+                }
+            } else if (whichKeyWord == 2) {
+                for (Movie movie : main.moviesDb){
+                    if (movie.language.equals("English") || movie.language.equals("Persian")){
+                        System.out.println(movie.title + " , " + movie.language);
+                    }
+                }
+            } else if (whichKeyWord == 3) {
+                System.out.println("movie with most rate : " + main.moviesDb.get(0).title + " , " + main.moviesDb.get(0).imdbRate);
+            } else if (whichKeyWord == 4) {
+                for(Cast cast: main.castDb){
+                    if (cast.name.equals("Ryan") && cast.lastName.equals("Gosling")){
+                        System.out.println("Ryan Gosling movies : ");
+                        for (Movie movie:cast.movies){
+                            System.out.println(movie.title);
+                        }
+                        break;
+                    }
+                }
+            } else if (whichKeyWord == 5) {
+                for (Cast cast : main.castDb){
+                    if (cast.role.equals(CastRole.DIRECTOR)){
+                        System.out.println(cast.name + " " + cast.lastName + " movies : ");
+                        for (Movie movie: cast.movies){
+                            System.out.println(movie.title);
+                        }
+                    }
+                }
+            }
         } else if (whichOne == 3) {
             System.out.println("1.movie or 2.user: ");
             int whichtwo = Integer.parseInt(main.scanner.nextLine());
@@ -325,7 +366,7 @@ public class User {
                 } else if (command == 7) {
                     System.out.println("enter new release date:");
                     String editrelease = main.scanner.nextLine();
-                    movie.realeseDate = editrelease;
+                    movie.realeseYear = editrelease;
                 } else if (command == 8) {
                     System.out.println("there is list of this movie reports:\nif you want to" +
                             "delete one of them or add one report enter your command:" +
@@ -761,6 +802,8 @@ public class User {
                 }
             }
         }
+        Movie.sortAndReverse();
+
     }
 
     public int getId() {

@@ -1,30 +1,31 @@
 package imdb;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class main {
+    //Db vars
     public static ArrayList<User> usersDb = new ArrayList<>();
     public static ArrayList<Movie> moviesDb = new ArrayList<>();
     public static ArrayList<Report> reportsDb = new ArrayList<>();
     public static ArrayList<Review> reviewsDb = new ArrayList<>();
     public static ArrayList<Cast> castDb = new ArrayList<>();
-    public static Random randomIdGen = new Random();
-    public static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Movie> comedyDb = new ArrayList<>();
     public static ArrayList<Movie> dramaDb = new ArrayList<>();
     public static ArrayList<Movie> actionDb = new ArrayList<>();
     public static ArrayList<Movie> cartoonDb = new ArrayList<>();
     public static ArrayList<Movie> horrorDb = new ArrayList<>();
 
-
+    //Global vars
+    public static Random randomIdGen = new Random();
+    public static Scanner scanner = new Scanner(System.in);
     public static int bound = 1000000;
-
     public static User logedInUser;
 
+    //Main method
     public static void main(String[] args) {
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //Database Handling
 
         Address userAddress = new Address("iran", "fars", "shiraz", "avini", 1);
 
@@ -93,22 +94,67 @@ public class main {
         usersDb.add(user2);
         usersDb.add(editor);
 
-
-        String[] rolelist = {"admin", "member", "editor", "cast"};
-
         ArrayList<Movie> castMovie = new ArrayList<>();
         ArrayList<User> castFollowers = new ArrayList<>();
         Cast castTest = new Cast(userID, "cast", "cast", 1, Sex.MALE, castMovie, CastRole.DIRECTOR, castFollowers);
         castDb.add(castTest);
 
-        ArrayList<Cast> movieTestCasts = new ArrayList<>();
-        movieTestCasts.add(castTest);
-        ArrayList<Integer> TestuserRates = new ArrayList<>();
-        ArrayList<Review> testReview = new ArrayList<>();
-        Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", randomIdGen.nextInt(100), "", "", "", "2,2,2", null
-                , testReview, "", null, "", 0, "", MovieGenres.ACION, "english", TestuserRates, 0);
+
+        ArrayList<Movie> ryanMovie = new ArrayList<>();
+        ArrayList<User> ryanFollowers = new ArrayList<>();
+        Cast ryanGosling = new Cast(userID + 3, "Ryan", "Gosling", 40, Sex.MALE, ryanMovie, CastRole.ACTOR, ryanFollowers);
+        castDb.add(ryanGosling);
+
+
+        ArrayList<Cast> movieCasts = new ArrayList<>();
+        movieCasts.add(castTest);
+        ArrayList<Integer> movieUserRates = new ArrayList<>();
+        ArrayList<Review> movieReview = new ArrayList<>();
+        ArrayList<Report> movieReport = new ArrayList<>();
+
+        Movie movieTest = new Movie(randomIdGen.nextInt(bound), "movie", 8, "", "", "", "2023", movieReport
+                , movieReview, "", movieCasts, "", 0, "", MovieGenres.ACION, "English", movieUserRates, 4);
         moviesDb.add(movieTest);
 
+
+        ArrayList<Cast> movie2Casts = new ArrayList<>();
+        movie2Casts.add(castTest);
+        ArrayList<Integer> movie2UserRates = new ArrayList<>();
+        ArrayList<Review> movie2Review = new ArrayList<>();
+        ArrayList<Report> movie2Report = new ArrayList<>();
+
+        Movie movie2Test = new Movie(randomIdGen.nextInt(bound), "movie2", 4.4, "", "", "", "2022", movie2Report
+                , movie2Review, "", movie2Casts, "", 0, "", MovieGenres.ACION, "Persian", movie2UserRates, 7);
+        moviesDb.add(movie2Test);
+
+        ArrayList<Cast> movie3Casts = new ArrayList<>();
+        movie3Casts.add(castTest);
+        ArrayList<Integer> movie3UserRates = new ArrayList<>();
+        ArrayList<Review> movie3Review = new ArrayList<>();
+        ArrayList<Report> movie3Report = new ArrayList<>();
+
+        Movie movie3Test = new Movie(randomIdGen.nextInt(bound), "movie3", 9, "", "", "", "2023", movie3Report
+                , movie3Review, "", movie3Casts, "", 0, "", MovieGenres.ACION, "Italy", movie3UserRates, 1);
+        moviesDb.add(movie3Test);
+        ryanMovie.add(movie3Test);
+        movie3Casts.add(ryanGosling);
+
+        ArrayList<Cast> movie4Casts = new ArrayList<>();
+        movie4Casts.add(castTest);
+        ArrayList<Integer> movie4UserRates = new ArrayList<>();
+        ArrayList<Review> movie4Review = new ArrayList<>();
+        ArrayList<Report> movie4Report = new ArrayList<>();
+        Movie movie4Test = new Movie(randomIdGen.nextInt(bound), "movie4", 0.98, "", "", "", "2021", movie4Report
+                , movie4Review, "", movie4Casts, "", 0, "", MovieGenres.HORROR , "German", movie4UserRates, 33 );
+        moviesDb.add(movie4Test);
+        ryanMovie.add(movie4Test);
+        movie4Casts.add(ryanGosling);
+
+
+        castMovie.add(movie3Test);
+        castMovie.add(movieTest);
+
+        Movie.sortAndReverse();
 
         for (Movie movie : moviesDb) {
             if (movie.movieGenres.equals(MovieGenres.COMEDY)) {
@@ -124,10 +170,12 @@ public class main {
             }
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //start of program
         while (true) {
             System.out.println("-------------------------------------------------------------");
             System.out.println("enter your command:");
-            System.out.println("1.exit\n2.login\n3.sign up\n4.reset password");
+            System.out.println("1.exit\n2.login\n3.sign up\n4.reset password\n5.See charts of highest rated, most popular");
             int command = Integer.parseInt(scanner.nextLine());
             if (command == 1) {
                 System.out.println("-------------------------------------------------------------");
@@ -511,6 +559,8 @@ public class main {
                 System.out.println("-------------------------------------------------------------");
             } else if (command == 4) {
                 User.resetpass();
+            } else if (command == 5) {
+                Movie.charts();
             }
             System.out.println("enter a key on your keyboard for continue:");
             String continueKey = scanner.nextLine();
